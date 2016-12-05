@@ -3,12 +3,10 @@ package com.linxu.mounteverest;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -29,18 +27,23 @@ public class MainActivity extends AppCompatActivity {
         learningStep2Percent = (EditText) findViewById(R.id.learningStep2Percent);
         learningStep1 = (TextView) findViewById(R.id.learningStep1);
         learningStep2 = (TextView) findViewById(R.id.learningStep2);
-        learningStep1Percent.setText("20");
-        learningStep2Percent.setText("50");
+        //learningStep1Percent.setText("20");
+        //learningStep2Percent.setText("50");
 
-        onProgress(learningStep1Percent, Integer.parseInt(learningStep1Percent.getText().toString()));
-        onProgress(learningStep2Percent, Integer.parseInt(learningStep2Percent.getText().toString()));
+        addFocusChangeListener(learningStep1Percent);
+        addFocusChangeListener(learningStep2Percent);
     }
 
-    private void onProgress(EditText learningStepPercent, final int percent) {
+    private void addFocusChangeListener(final EditText learningStepPercent) {
         learningStepPercent.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                progressBar.setProgress(percent);
+                if(!learningStepPercent.getText().toString().equals("")){
+                    int percent = Integer.parseInt(learningStepPercent.getText().toString());
+                    progressBar.setProgress(percent);
+                }else{
+                    progressBar.setProgress(0);
+                }
             }
         });
     }
