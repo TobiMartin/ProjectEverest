@@ -7,9 +7,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBar;
@@ -17,13 +21,16 @@ public class MainActivity extends AppCompatActivity {
     private EditText learningStep2Percent;
     private TextView learningStep1;
     private TextView learningStep2;
-
+    LinearLayout ll;
+    int[] progress ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         progressBar = (ProgressBar)findViewById(R.id.progressBar1);
+        ll = (LinearLayout)findViewById(R.id.button_layoout);
         getProgressBarProgress();
+
         //learningStep1Percent = (EditText) findViewById(R.id.learningStep1Percent);
         //learningStep2Percent = (EditText) findViewById(R.id.learningStep2Percent);
         //learningStep1 = (TextView) findViewById(R.id.learningStep1);
@@ -35,15 +42,32 @@ public class MainActivity extends AppCompatActivity {
 
     private void getProgressBarProgress() {
         Bundle extras = getIntent().getExtras();
+
         if(extras != null){
-            String learningProgress1 = extras.getString("learningStepPercent1");
-            String learningProgress2 = extras.getString("learningStepPercent2");
-            String learningProgress3 = extras.getString("learningStepPercent3");
-            progressBar.setProgress(Integer.parseInt(learningProgress1) + Integer.parseInt(learningProgress2) + Integer.parseInt(learningProgress3));
+            //String learningProgress1 = extras.getString("learningStepPercent1");
+            //String learningProgress2 = extras.getString("learningStepPercent2");
+            //String learningProgress3 = extras.getString("learningStepPercent3");
+
+
+            for(int i = 0; i < extras.size(); i++){
+                progress = new int[extras.size()];
+                progress[i]= Integer.parseInt(extras.getString("learningStepPercent"+Integer.toString(i+1)));
+                Button button = new Button(this);
+                button.setId(i+1);
+                final int id_ = button.getId();
+                button.setText("learningStep"+ (i+1));
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(MainActivity.this, "button clicked index: "+ id_ + " progress: " + progress[id_-1] + " progress id: " + (id_ -1), Toast.LENGTH_SHORT).show();
+                        progressBar.setProgress(progress[id_-1]);
+                    }
+                });
+                ll.addView(button);
+            }
         }else{
             progressBar.setProgress(0);
         }
-
     }
 
     private void addFocusChangeListener(final EditText learningStepPercent) {
