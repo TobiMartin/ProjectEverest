@@ -23,15 +23,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         progressBar = (ProgressBar)findViewById(R.id.progressBar1);
-        learningStep1Percent = (EditText) findViewById(R.id.learningStep1Percent);
-        learningStep2Percent = (EditText) findViewById(R.id.learningStep2Percent);
-        learningStep1 = (TextView) findViewById(R.id.learningStep1);
-        learningStep2 = (TextView) findViewById(R.id.learningStep2);
-        //learningStep1Percent.setText("20");
-        //learningStep2Percent.setText("50");
+        getProgressBarProgress();
+        //learningStep1Percent = (EditText) findViewById(R.id.learningStep1Percent);
+        //learningStep2Percent = (EditText) findViewById(R.id.learningStep2Percent);
+        //learningStep1 = (TextView) findViewById(R.id.learningStep1);
+        //learningStep2 = (TextView) findViewById(R.id.learningStep2);
 
-        addFocusChangeListener(learningStep1Percent);
-        addFocusChangeListener(learningStep2Percent);
+        //addFocusChangeListener(learningStep1Percent);
+        //addFocusChangeListener(learningStep2Percent);
+    }
+
+    private void getProgressBarProgress() {
+        Bundle extras = getIntent().getExtras();
+        if(extras != null){
+            String learningProgress1 = extras.getString("learningStepPercent1");
+            String learningProgress2 = extras.getString("learningStepPercent2");
+            String learningProgress3 = extras.getString("learningStepPercent3");
+            progressBar.setProgress(Integer.parseInt(learningProgress1) + Integer.parseInt(learningProgress2) + Integer.parseInt(learningProgress3));
+        }else{
+            progressBar.setProgress(0);
+        }
+
     }
 
     private void addFocusChangeListener(final EditText learningStepPercent) {

@@ -26,50 +26,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Learning Step 1"
-        android:ems="10"
-        android:id="@+id/learningStep1"
-        android:layout_above="@+id/chooseLearningStpe2"
-        android:layout_alignParentStart="true" />
-
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/learningStep2"
-        android:layout_alignParentStart="true"
-        android:id="@+id/chooseLearningStep1" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Learning Step 2"
-        android:ems="10"
-        android:id="@+id/learningStep2"
-        android:layout_above="@+id/chooseLearningStep3"
-        android:layout_alignParentStart="true" />
-
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/chooseLearningStpe2"
-        android:layout_above="@+id/learningStep3"
-        android:layout_alignParentStart="true" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
         android:text="Learning Step 3"
         android:ems="10"
         android:id="@+id/learningStep3"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true" />
-
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/chooseLearningStep3"
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true" />
 
@@ -110,5 +69,54 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="41dp"
         android:id="@+id/save" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Learning Step 2"
+        android:ems="10"
+        android:id="@+id/learningStep2"
+        android:layout_above="@+id/learningStep3"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Learning Step 1"
+        android:ems="10"
+        android:id="@+id/learningStep1"
+        android:layout_above="@+id/learningStep2"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/learningStepPercent1"
+        android:layout_alignBaseline="@+id/learningStep1"
+        android:layout_alignBottom="@+id/learningStep1"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/learningStepPercent2"
+        android:layout_alignBaseline="@+id/learningStep2"
+        android:layout_alignBottom="@+id/learningStep2"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/learningStepPercent3"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
