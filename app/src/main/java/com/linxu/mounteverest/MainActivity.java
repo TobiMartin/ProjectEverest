@@ -3,90 +3,66 @@ package com.linxu.mounteverest;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBar;
-    private EditText learningStep1Percent;
-    private EditText learningStep2Percent;
-    private TextView learningStep1;
-    private TextView learningStep2;
     LinearLayout ll;
-    int[] progress ;
+    Bundle extras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         progressBar = (ProgressBar)findViewById(R.id.progressBar1);
-        ll = (LinearLayout)findViewById(R.id.button_layoout);
-
-
-        getProgressBarProgress();
-        //learningStep1Percent = (EditText) findViewById(R.id.learningStep1Percent);
-        //learningStep2Percent = (EditText) findViewById(R.id.learningStep2Percent);
-        //learningStep1 = (TextView) findViewById(R.id.learningStep1);
-        //learningStep2 = (TextView) findViewById(R.id.learningStep2);
-
-        //addFocusChangeListener(learningStep1Percent);
-        //addFocusChangeListener(learningStep2Percent);
+        extras = getIntent().getExtras();
+        validateEmptyProjectData();
     }
 
-
-
-    private void getProgressBarProgress() {
-        Bundle extras = getIntent().getExtras();
-        if(extras != null){
-            for(int i = 0; i < extras.size(); i++){
-                progress = new int[extras.size()];
-                progress[i]= Integer.parseInt(extras.getString("learningStepPercent"+(i+1)));
-                Toast.makeText(MainActivity.this, "learningStepPercent"+ (i+1) + ": " + progress[i], Toast.LENGTH_SHORT).show();}
-            //String learningProgress1 = extras.getString("learningStepPercent1");
-            //String learningProgress2 = extras.getString("learningStepPercent2");
-            //String learningProgress3 = extras.getString("learningStepPercent3");
-
-
-            for(int i = 0; i < extras.size(); i++){
-
-                final Button button = new Button(this);
-                button.setId(i+1);
-                button.setText("learningStep"+ (i+1));
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(MainActivity.this, "button clicked index: "+ button.getId() + " progress: " + progress[button.getId() -1] + " progress id: " + (button.getId() -1), Toast.LENGTH_SHORT).show();
-                        progressBar.setProgress(progress[button.getId() -1]);
-                    }
-                });
-                ll.addView(button);
-            }
+    private void validateEmptyProjectData() {
+        if(extras == null){
+            Intent intent = new Intent(MainActivity.this, AddProject.class);
+            startActivity(intent);
         }else{
-            progressBar.setProgress(0);
+            bindButton();
         }
     }
 
-    private void addFocusChangeListener(final EditText learningStepPercent) {
-        learningStepPercent.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if(!learningStepPercent.getText().toString().equals("")){
-                    int percent = Integer.parseInt(learningStepPercent.getText().toString());
-                    progressBar.setProgress(percent);
-                }else{
-                    progressBar.setProgress(0);
+    private int[] extractLearningStepPercentage() {
+        int[] learningStepPercentage;
+        learningStepPercentage = new int[extras.size()];
+        for(int i = 0; i < extras.size(); i++){
+            learningStepPercentage[i] = Integer.parseInt(extras.getString("learningStepPercent" + (i+1)));
+        }
+        Log.d("learning Percentage: " , " " + Arrays.toString(learningStepPercentage));
+        return learningStepPercentage;
+    }
+
+    private void bindButton() {
+        ll = (LinearLayout)findViewById(R.id.button_layoout);
+        for(int i = 0; i < extractLearningStepPercentage().length; i++){
+            Button button = new Button(this);
+            button.setId(i+1);
+            button.setText("learningStepPercentage" + (i+1));
+            ll.addView(button);
+            final int finalI = i;
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    progressBar.setProgress(extractLearningStepPercentage()[finalI]);
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override
