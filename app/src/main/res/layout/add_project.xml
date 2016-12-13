@@ -119,11 +119,13 @@
         android:text="Dead Line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/deadLine" />
+        android:id="@+id/deadLineTextView" />
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="dead line"/>
+        android:inputType="date"
+        android:hint="dead line"
+        android:id="@+id/deadLine"/>
 
 
     <Button
