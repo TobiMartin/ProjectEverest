@@ -13,9 +13,11 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -128,16 +130,23 @@ public class AddProject extends AppCompatActivity {
     }
 
     private void saveProject() {
+        formValidate();
+        caculateTotalProjectDuration();
         Intent intent = new Intent(getBaseContext(), MainActivity.class);
         intent.putExtra("learningStepPercent1", learningStepPercent1.getText().toString());
         intent.putExtra("learningStepPercent2", learningStepPercent2.getText().toString());
         intent.putExtra("learningStepPercent3", learningStepPercent3.getText().toString());
         startActivity(intent);
-        formValidate();
     }
 
-    private void
-        formValidate() {
+    private long caculateTotalProjectDuration() {
+        long diff = end_myCalendar.getTimeInMillis() - start_myCalendar.getTimeInMillis();
+        long duration = diff/(1000 * 60 * 60 * 24);
+        Toast.makeText(AddProject.this, "duration: " + duration, Toast.LENGTH_SHORT).show();
+        return duration;
+    }
+
+    private void formValidate() {
         //Todo: to check if all the blanks are filled with proper data
     }
 
