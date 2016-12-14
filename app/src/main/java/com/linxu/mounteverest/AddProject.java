@@ -78,14 +78,14 @@ public class AddProject extends AppCompatActivity {
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(AddProject.this, start_date, start_myCalendar.get(Calendar.YEAR), start_myCalendar.get(Calendar.MONTH), start_myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                openDatePickerDialog(end_date, end_myCalendar);
             }
         });
 
         deadLine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(AddProject.this, end_date, end_myCalendar.get(Calendar.YEAR), start_myCalendar.get(Calendar.MONTH), end_myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                openDatePickerDialog(start_date, start_myCalendar);
             }
         });
 
@@ -104,6 +104,10 @@ public class AddProject extends AppCompatActivity {
                 addLearningStep();
             }
         });
+    }
+
+    private void openDatePickerDialog(DatePickerDialog.OnDateSetListener dateSetListener, Calendar cal) {
+        new DatePickerDialog(AddProject.this, dateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show();
     }
 
     private void addLearningStep() {

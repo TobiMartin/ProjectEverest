@@ -51,15 +51,20 @@ public class MainActivity extends AppCompatActivity {
     private void bindButton() {
         ll = (LinearLayout)findViewById(R.id.button_layoout);
         for(int i = 0; i < extractLearningStepPercentage().length; i++){
-            Button button = new Button(this);
+            final Button button = new Button(this);
             button.setId(i+1);
             button.setText("learningStepPercentage" + (i+1));
             ll.addView(button);
             final int finalI = i;
             button.setOnClickListener(new View.OnClickListener() {
+                int sum;
                 @Override
                 public void onClick(View view) {
-                    progressBar.setProgress(extractLearningStepPercentage()[finalI]);
+                    for(int i = 0; i<button.getId(); i++){
+                        sum += extractLearningStepPercentage()[i];
+                    }
+                    progressBar.setProgress(sum);
+                    Toast.makeText(MainActivity.this, "sum: "+ sum, Toast.LENGTH_SHORT).show();
                 }
             });
         }
