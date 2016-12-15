@@ -43,7 +43,28 @@ public class CustomSliderView extends View{
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        return super.onTouchEvent(event);
+        int eventAction = event.getAction();
+
+        // you may need the x/y location
+        int x = (int)event.getX();
+        int y = (int)event.getY();
+
+        // put your code in here to handle the event
+        switch (eventAction) {
+            case MotionEvent.ACTION_DOWN:
+                break;
+            case MotionEvent.ACTION_UP:
+                break;
+            case MotionEvent.ACTION_MOVE:
+                break;
+        }
+
+        // tell the View to redraw the Canvas
+        invalidate();
+
+        // tell the View that we handled the event
+        return true;
+
     }
 
     @Override
