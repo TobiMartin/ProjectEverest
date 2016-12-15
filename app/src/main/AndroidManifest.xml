@@ -20,4 +20,5 @@
         <activity android:name=".Search"></activity>
     </application>
 
+
 </manifest>

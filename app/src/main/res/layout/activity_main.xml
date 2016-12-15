@@ -25,42 +25,5 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
-    <!--<TextView
-        android:text="Learning Step 1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/learningStep1"
-        android:layout_below="@+id/progressBar1"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="21dp" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:id="@+id/learningStep1Percent"
-        android:layout_alignBaseline="@+id/learningStep1"
-        android:layout_alignBottom="@+id/learningStep1"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/learningStep1" />
-
-    <TextView
-        android:text="Learning Step 2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/learningStep2"
-        android:layout_below="@+id/learningStep1Percent"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="23dp" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/learningStep2Percent"
-        android:layout_alignBaseline="@+id/learningStep2"
-        android:layout_alignBottom="@+id/learningStep2"
-        android:layout_alignParentEnd="true" />
--->
 </RelativeLayout>

@@ -24,9 +24,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         progressBar = (ProgressBar)findViewById(R.id.progressBar1);
         extras = getIntent().getExtras();
         validateEmptyProjectData();
+
     }
 
     private void validateEmptyProjectData() {
@@ -87,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(this, Profile.class));
                 return true;
             case R.id.add_project:
-                startActivity(new Intent(this, AddProject.class));
+                startActivity(new Intent(this, _AddProject.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
