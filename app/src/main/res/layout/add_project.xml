@@ -30,7 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:inputType="date"
-            android:hint="days can not work"
+            android:hint="unworkable days"
             android:layout_weight="1"
             android:ems="10"
             android:id="@+id/dueDate" />
@@ -114,7 +114,6 @@
         </TableRow>
     </TableLayout>
 
-
     <TextView
         android:text="Dead Line"
         android:layout_width="wrap_content"
@@ -124,7 +123,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="date"
-        android:hint="dead line"
+        android:hint="deadline"
         android:id="@+id/deadLine"/>
 
 
@@ -139,4 +138,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/save" />
+
+    <SeekBar
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="10"
+        android:progress="3"
+        android:id="@+id/projectSlider" />
 </LinearLayout>

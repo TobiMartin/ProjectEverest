@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -37,7 +38,9 @@ public class AddProject extends AppCompatActivity {
     private Calendar end_myCalendar;
     private DatePickerDialog.OnDateSetListener start_date;
     private DatePickerDialog.OnDateSetListener end_date;
-
+    private boolean startDateSet;
+    private boolean endDateSet;
+    private SeekBar projectSlider;
     int n = 4;
 
     @Override
@@ -52,6 +55,9 @@ public class AddProject extends AppCompatActivity {
 
         startDate = (EditText)findViewById(R.id.startDate);
         deadLine = (EditText)findViewById(R.id.deadLine);
+
+        startDateSet = false;
+        endDateSet = false;
 
         start_myCalendar = Calendar.getInstance();
         start_date = new DatePickerDialog.OnDateSetListener(){
@@ -78,16 +84,22 @@ public class AddProject extends AppCompatActivity {
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openDatePickerDialog(end_date, end_myCalendar);
+                openDatePickerDialog(start_date, start_myCalendar);
+                startDateSet = true;
             }
         });
 
         deadLine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openDatePickerDialog(start_date, start_myCalendar);
+                openDatePickerDialog(end_date, end_myCalendar);
+                endDateSet = true;
+                if(startDateSet&& endDateSet){
+                    setProjectSlider();
+                }
             }
         });
+
 
         save = (Button)findViewById(R.id.save);
         save.setOnClickListener(new View.OnClickListener() {
@@ -104,6 +116,14 @@ public class AddProject extends AppCompatActivity {
                 addLearningStep();
             }
         });
+    }
+
+    private void setProjectSlider() {
+
+        projectSlider = (SeekBar)findViewById(R.id.projectSlider);
+        int duration = caculateTotalProjectDuration();
+        projectSlider.setMax(duration);
+        Toast.makeText(AddProject.this, "max: " + duration, Toast.LENGTH_SHORT).show();
     }
 
     private void openDatePickerDialog(DatePickerDialog.OnDateSetListener dateSetListener, Calendar cal) {
@@ -143,9 +163,9 @@ public class AddProject extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private long caculateTotalProjectDuration() {
+    private int caculateTotalProjectDuration() {
         long diff = end_myCalendar.getTimeInMillis() - start_myCalendar.getTimeInMillis();
-        long duration = diff/(1000 * 60 * 60 * 24);
+        int duration = (int)diff/(1000 * 60 * 60 * 24);
         Toast.makeText(AddProject.this, "duration: " + duration, Toast.LENGTH_SHORT).show();
         return duration;
     }
