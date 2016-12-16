@@ -6,9 +6,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 /**
  * Created by lin xu on 15.12.2016.
@@ -17,6 +20,7 @@ import android.view.View;
 public class CustomSliderView extends View{
     private Rect rectangle;
     private Paint paint;
+    private GestureDetector gestureDetector;
 
     public CustomSliderView(Context context) {
         super(context);
@@ -38,33 +42,55 @@ public class CustomSliderView extends View{
 
         // create the Paint and set its color
         paint = new Paint();
-        paint.setColor(Color.GRAY);
+        paint.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+
+        gestureDetector = new GestureDetector(getContext(), new mListener());
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        int eventAction = event.getAction();
-
-        // you may need the x/y location
-        int x = (int)event.getX();
-        int y = (int)event.getY();
-
-        // put your code in here to handle the event
-        switch (eventAction) {
-            case MotionEvent.ACTION_DOWN:
-                break;
-            case MotionEvent.ACTION_UP:
-                break;
-            case MotionEvent.ACTION_MOVE:
-                break;
+        boolean result = gestureDetector.onTouchEvent(event);
+        if (!result) {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                // User is done scrolling, it's now safe to do things like autocenter
+                //stopScrolling();
+                result = true;
+            }
         }
+        return result;
+        //int eventAction = event.getAction();
+//
+        //// you may need the x/y location
+        //int x = (int)event.getX();
+        //int y = (int)event.getY();
+//
+        //// put your code in here to handle the event
+        //switch (eventAction) {
+        //    case MotionEvent.ACTION_DOWN:
+        //        Toast.makeText(getContext(), "action down", Toast.LENGTH_SHORT).show();
+        //        break;
+        //    case MotionEvent.ACTION_UP:
+        //        Toast.makeText(getContext(), "action up", Toast.LENGTH_SHORT).show();
+        //        break;
+        //    case MotionEvent.ACTION_MOVE:
+        //        Toast.makeText(getContext(), "action move", Toast.LENGTH_SHORT).show();
+        //        break;
+        //}
+//
+        //// tell the View to redraw the Canvas
+        //invalidate();
+//
+        //// tell the View that we handled the event
+        //return true;
+//
+    }
 
-        // tell the View to redraw the Canvas
-        invalidate();
-
-        // tell the View that we handled the event
-        return true;
-
+    private class mListener extends GestureDetector.SimpleOnGestureListener{
+        @Override
+        public boolean onDown(MotionEvent e) {
+            Toast.makeText(getContext(), "gesture detector down", Toast.LENGTH_SHORT).show();
+            return super.onDown(e);
+        }
     }
 
     @Override
