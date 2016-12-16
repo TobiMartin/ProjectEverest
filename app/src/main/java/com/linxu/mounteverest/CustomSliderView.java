@@ -1,7 +1,6 @@
 package com.linxu.mounteverest;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,14 +12,22 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by lin xu on 15.12.2016.
  */
 
 public class CustomSliderView extends View{
-    private Rect rectangle;
-    private Paint paint;
+    private Rect slider;
+    private Paint sliderPaint;
     private GestureDetector gestureDetector;
+
+    private List<Rect> eventMarkers;
+    private Rect draggedMarker = null;
+    private final int eventMarkerHeight = 80;
+    private Paint eventPaint;
 
     public CustomSliderView(Context context) {
         super(context);
@@ -33,55 +40,89 @@ public class CustomSliderView extends View{
     }
 
     public void init(){
-        int x = 50;
-        int y = 50;
-        int sideLength = 200;
+        int x = 100;
+        int y = 150;
+        int sideWidth = 200;
+        int sideHeight = 1500;
 
-        // create a rectangle that we'll draw later
-        rectangle = new Rect(x, y, sideLength, sideLength);
+
+
+        // create a slider that we'll draw later
+        slider = new Rect(x, y, x+sideWidth, y+sideHeight);
+
+        eventMarkers = new ArrayList<>();
 
         // create the Paint and set its color
-        paint = new Paint();
-        paint.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+        sliderPaint = new Paint();
+        sliderPaint.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
 
-        gestureDetector = new GestureDetector(getContext(), new mListener());
+        eventPaint = new Paint();
+        eventPaint.setColor(Color.BLACK);
+
+
+        //gestureDetector = new GestureDetector(getContext(), new mListener());
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        boolean result = gestureDetector.onTouchEvent(event);
-        if (!result) {
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-                // User is done scrolling, it's now safe to do things like autocenter
-                //stopScrolling();
-                result = true;
-            }
+       // boolean result = gestureDetector.onTouchEvent(event);
+       // if (!result) {
+       //     if (event.getAction() == MotionEvent.ACTION_UP) {
+       //         // User is done scrolling, it's now safe to do things like autocenter
+       //         //stopScrolling();
+       //         result = true;
+       //     }
+       // }
+       // return result;
+        int eventAction = event.getAction();
+
+        // you may need the x/y location
+        int x = (int)event.getX();
+        int y = (int)event.getY();
+
+
+
+
+
+
+        // put your code in here to handle the event
+        switch (eventAction) {
+            case MotionEvent.ACTION_DOWN:
+                //double heightFraction = (double)(y - slider.top) / slider.height();
+                //Toast.makeText(getContext(), "down", Toast.LENGTH_SHORT).show();
+                if (slider.contains(x, y)) {
+                    for (Rect eventMarker : eventMarkers) {
+                        if (eventMarker.contains(x, y)) {
+                            draggedMarker = eventMarker;
+                        }
+                    }
+
+                    if (draggedMarker == null) {
+                        eventMarkers.add(new Rect(slider.left, y - eventMarkerHeight / 2,
+                                slider.right, y + eventMarkerHeight / 2));
+                        draggedMarker = eventMarkers.get(eventMarkers.size() - 1);
+                    }
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                draggedMarker = null;
+
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+                if (draggedMarker != null) {
+                    draggedMarker.top = y - eventMarkerHeight / 2;
+                    draggedMarker.bottom = y + eventMarkerHeight / 2;
+                }
+                break;
         }
-        return result;
-        //int eventAction = event.getAction();
+
+
+        // tell the View to redraw the Canvas
+        invalidate();
 //
-        //// you may need the x/y location
-        //int x = (int)event.getX();
-        //int y = (int)event.getY();
-//
-        //// put your code in here to handle the event
-        //switch (eventAction) {
-        //    case MotionEvent.ACTION_DOWN:
-        //        Toast.makeText(getContext(), "action down", Toast.LENGTH_SHORT).show();
-        //        break;
-        //    case MotionEvent.ACTION_UP:
-        //        Toast.makeText(getContext(), "action up", Toast.LENGTH_SHORT).show();
-        //        break;
-        //    case MotionEvent.ACTION_MOVE:
-        //        Toast.makeText(getContext(), "action move", Toast.LENGTH_SHORT).show();
-        //        break;
-        //}
-//
-        //// tell the View to redraw the Canvas
-        //invalidate();
-//
-        //// tell the View that we handled the event
-        //return true;
+        // tell the View that we handled the event
+        return true;
 //
     }
 
@@ -95,6 +136,12 @@ public class CustomSliderView extends View{
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawRect(rectangle, paint);
+        canvas.drawRect(slider, sliderPaint);
+
+        for (Rect eventMarker : eventMarkers) {
+            canvas.drawRect(eventMarker, eventPaint);
+        }
+
+
     }
 }
