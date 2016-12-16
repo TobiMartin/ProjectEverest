@@ -1,5 +1,6 @@
 package com.linxu.mounteverest;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,9 +11,11 @@ import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -28,6 +31,11 @@ public class CustomSliderView extends View{
     private Rect draggedMarker = null;
     private final int eventMarkerHeight = 80;
     private Paint eventPaint;
+
+    private Rect startDateRegion;
+    private Paint dateRegionPaint;
+
+    private DatePickerDialog.OnDateSetListener onDateSetListener;
 
     public CustomSliderView(Context context) {
         super(context);
@@ -59,8 +67,21 @@ public class CustomSliderView extends View{
         eventPaint = new Paint();
         eventPaint.setColor(Color.BLACK);
 
-
+        startDateRegion = new Rect(slider.left, slider.top - 100, slider.right, slider.top);
+        dateRegionPaint = new Paint();
+        dateRegionPaint.setColor(Color.CYAN);
         //gestureDetector = new GestureDetector(getContext(), new mListener());
+
+
+
+        onDateSetListener = new DatePickerDialog.OnDateSetListener(){
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                Calendar.getInstance().set(Calendar.YEAR, year);
+                Calendar.getInstance().set(Calendar.MONTH, month);
+                Calendar.getInstance().set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            }
+        };
     }
 
     @Override
@@ -90,6 +111,11 @@ public class CustomSliderView extends View{
             case MotionEvent.ACTION_DOWN:
                 //double heightFraction = (double)(y - slider.top) / slider.height();
                 //Toast.makeText(getContext(), "down", Toast.LENGTH_SHORT).show();
+                if (startDateRegion.contains(x, y)) {
+                    openDatePickerDialog(onDateSetListener);
+                    break;
+                }
+
                 if (slider.contains(x, y)) {
                     for (Rect eventMarker : eventMarkers) {
                         if (eventMarker.contains(x, y)) {
@@ -142,6 +168,13 @@ public class CustomSliderView extends View{
             canvas.drawRect(eventMarker, eventPaint);
         }
 
+        canvas.drawRect(startDateRegion, dateRegionPaint);
 
+
+    }
+
+    private void openDatePickerDialog(DatePickerDialog.OnDateSetListener dateSetListener) {
+        new DatePickerDialog(getContext(), dateSetListener, Calendar.getInstance().get(Calendar.YEAR),
+                Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH)).show();
     }
 }
