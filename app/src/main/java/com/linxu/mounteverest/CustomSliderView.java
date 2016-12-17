@@ -33,6 +33,7 @@ public class CustomSliderView extends View{
     private Paint eventPaint;
 
     private Rect startDateRegion;
+    private Rect endDateRegion;
     private Paint dateRegionPaint;
 
     private DatePickerDialog.OnDateSetListener onDateSetListener;
@@ -51,9 +52,7 @@ public class CustomSliderView extends View{
         int x = 100;
         int y = 150;
         int sideWidth = 200;
-        int sideHeight = 1500;
-
-
+        int sideHeight = 1300;
 
         // create a slider that we'll draw later
         slider = new Rect(x, y, x+sideWidth, y+sideHeight);
@@ -72,7 +71,7 @@ public class CustomSliderView extends View{
         dateRegionPaint.setColor(Color.CYAN);
         //gestureDetector = new GestureDetector(getContext(), new mListener());
 
-
+        endDateRegion = new Rect(slider.left, slider.bottom, slider.right, slider.bottom + 100);
 
         onDateSetListener = new DatePickerDialog.OnDateSetListener(){
             @Override
@@ -86,24 +85,12 @@ public class CustomSliderView extends View{
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-       // boolean result = gestureDetector.onTouchEvent(event);
-       // if (!result) {
-       //     if (event.getAction() == MotionEvent.ACTION_UP) {
-       //         // User is done scrolling, it's now safe to do things like autocenter
-       //         //stopScrolling();
-       //         result = true;
-       //     }
-       // }
-       // return result;
+
         int eventAction = event.getAction();
 
         // you may need the x/y location
         int x = (int)event.getX();
         int y = (int)event.getY();
-
-
-
-
 
 
         // put your code in here to handle the event
@@ -112,6 +99,11 @@ public class CustomSliderView extends View{
                 //double heightFraction = (double)(y - slider.top) / slider.height();
                 //Toast.makeText(getContext(), "down", Toast.LENGTH_SHORT).show();
                 if (startDateRegion.contains(x, y)) {
+                    openDatePickerDialog(onDateSetListener);
+                    break;
+                }
+
+                if(endDateRegion.contains(x, y)){
                     openDatePickerDialog(onDateSetListener);
                     break;
                 }
@@ -169,6 +161,7 @@ public class CustomSliderView extends View{
         }
 
         canvas.drawRect(startDateRegion, dateRegionPaint);
+        canvas.drawRect(endDateRegion, dateRegionPaint);
 
 
     }
