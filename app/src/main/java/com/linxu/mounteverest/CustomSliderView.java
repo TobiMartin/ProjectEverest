@@ -49,7 +49,11 @@ public class CustomSliderView extends View {
     private int monthStr;
     private int dayStr;
 
+    private String startDate = "";
+    private String endDate = "";
+
     private boolean checkStartDate;
+    private Long startDateInMillis;
 
     public CustomSliderView(Context context) {
         super(context);
@@ -171,14 +175,17 @@ public class CustomSliderView extends View {
 
 
         final DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
-            // when dialog box is closed, below method will be called.
+
             public void onDateSet(DatePicker view, int selectedYear,
                                   int selectedMonth, int selectedDay) {
+                //Log.d("log: ", "run OnDateSet method");
                 if (isOkayClicked) {
                     if(checkStartDate){
-                        addProject.changeStartDate(Integer.toString(selectedYear) + "/0" + Integer.toString(selectedMonth + 1) +  "/" + Integer.toString(selectedDay));
+                        startDate = Integer.toString(selectedYear) + "/0" + Integer.toString(selectedMonth + 1) +  "/" + Integer.toString(selectedDay);
+                        addProject.changeStartDate(startDate);
                     }else{
-                        addProject.changeEndDate(Integer.toString(selectedYear) + "/0" + Integer.toString(selectedMonth + 1) +  "/" + Integer.toString(selectedDay));
+                        endDate =Integer.toString(selectedYear) + "/0" + Integer.toString(selectedMonth + 1) +  "/" + Integer.toString(selectedDay);
+                        addProject.changeEndDate(endDate);
                     }
                     yearStr = selectedYear;
                     monthStr = selectedMonth;
@@ -190,6 +197,11 @@ public class CustomSliderView extends View {
         final DatePickerDialog datePickerDialog = new DatePickerDialog(
                 getContext(), datePickerListener,
                 yearStr, monthStr, dayStr);
+
+
+            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+            Log.d("currentTimeMillis: ", Long.toString(System.currentTimeMillis()));
+
 
         datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE,
                 "Cancel",
@@ -209,12 +221,21 @@ public class CustomSliderView extends View {
                                         int which) {
                         if (which == DialogInterface.BUTTON_POSITIVE) {
                             isOkayClicked = true;
-                            DatePicker datePicker = datePickerDialog
-                                    .getDatePicker();
+                            DatePicker datePicker = datePickerDialog.getDatePicker();
                             datePickerListener.onDateSet(datePicker,
                                     datePicker.getYear(),
                                     datePicker.getMonth(),
                                     datePicker.getDayOfMonth());
+                            c.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
+                            c.set(Calendar.MONTH, datePicker.getMonth());
+                            c.set(Calendar.YEAR, datePicker.getYear());
+                            if(checkStartDate){
+                                startDateInMillis = c.getTimeInMillis();
+                            }
+                            if(!checkStartDate){
+                                datePickerDialog.getDatePicker().setMinDate(startDateInMillis - 1000);
+                                Log.d("startDateInMillis: ", Long.toString(startDateInMillis));
+                            }
                         }
                     }
                 });
