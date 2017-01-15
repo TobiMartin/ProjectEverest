@@ -198,10 +198,14 @@ public class CustomSliderView extends View {
                 getContext(), datePickerListener,
                 yearStr, monthStr, dayStr);
 
-
-            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        if(checkStartDate){
+            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
             Log.d("currentTimeMillis: ", Long.toString(System.currentTimeMillis()));
 
+        }else{
+            datePickerDialog.getDatePicker().setMinDate(startDateInMillis);
+            Log.d("end date", Long.toString(startDateInMillis));
+        }
 
         datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE,
                 "Cancel",
@@ -229,13 +233,14 @@ public class CustomSliderView extends View {
                             c.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
                             c.set(Calendar.MONTH, datePicker.getMonth());
                             c.set(Calendar.YEAR, datePicker.getYear());
-                            if(checkStartDate){
-                                startDateInMillis = c.getTimeInMillis();
-                            }
-                            if(!checkStartDate){
-                                datePickerDialog.getDatePicker().setMinDate(startDateInMillis - 1000);
-                                Log.d("startDateInMillis: ", Long.toString(startDateInMillis));
-                            }
+
+                            startDateInMillis = c.getTimeInMillis();
+                            Log.d("start date", Long.toString(startDateInMillis));
+                            //if(!checkStartDate){
+                            //    //datePickerDialog.getDatePicker().setMinDate(startDateInMillis - 1000);
+                            //    //Log.d("startDateInMillis: ", Long.toString(startDateInMillis));
+                            //
+                            //}
                         }
                     }
                 });
