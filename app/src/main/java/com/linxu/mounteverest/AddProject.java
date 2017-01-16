@@ -17,6 +17,9 @@ public class AddProject extends AppCompatActivity {
     private TextView startTextView;
     private TextView endTextView;
 
+    private boolean startDateSet = false;
+    private boolean endDateSet = false;
+
     Bundle extras;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +33,23 @@ public class AddProject extends AppCompatActivity {
 
     public void changeStartDate(String date) {
         startTextView.setText(date);
+        startDateSet = true;
     }
 
     public void changeEndDate(String date){
         endTextView.setText(date);
+        endDateSet = true;
+    }
+    public boolean isStartDateSet(){
+        if(startDateSet){
+            return true;
+        }
+        return false;
+    }
+    public boolean isEndDateSet(){
+        if(endDateSet){
+            return true;
+        }
+        return false;
     }
 }

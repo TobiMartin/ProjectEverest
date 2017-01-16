@@ -1,6 +1,7 @@
 package com.linxu.mounteverest;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Canvas;
@@ -40,8 +41,6 @@ public class CustomSliderView extends View {
     private Rect endDateRegion;
     private Paint dateRegionPaint;
 
-    private DatePickerDialog.OnDateSetListener onDateSetListener;
-
     private AddProject addProject;
     private boolean isOkayClicked;
 
@@ -54,6 +53,9 @@ public class CustomSliderView extends View {
 
     private boolean checkStartDate;
     private Long startDateInMillis;
+    private Long endDateInMillis;
+
+    private float dayCount = 0f;
 
     public CustomSliderView(Context context) {
         super(context);
@@ -86,26 +88,13 @@ public class CustomSliderView extends View {
         startDateRegion = new Rect(slider.left, slider.top - 100, slider.right, slider.top);
         dateRegionPaint = new Paint();
         dateRegionPaint.setColor(Color.CYAN);
-        //gestureDetector = new GestureDetector(getContext(), new mListener());
 
         endDateRegion = new Rect(slider.left, slider.bottom, slider.right, slider.bottom + 100);
-        //onDateSetListener = new DatePickerDialog.OnDateSetListener(){
-        //    @Override
-        //    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        //        if(isOkayClicked) {
-        //            Calendar.getInstance().set(Calendar.YEAR, year);
-        //            Calendar.getInstance().set(Calendar.MONTH, month);
-        //            Calendar.getInstance().set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        //        }
-        //    }
-        //};
-
     }
 
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
 
         int eventAction = event.getAction();
 
@@ -118,13 +107,11 @@ public class CustomSliderView extends View {
                 if (startDateRegion.contains(x, y)) {
                     checkStartDate = true;
                     showDatePicker();
-                    //openDatePickerDialog(onDateSetListener, checkStartDate);
                     break;
                 }
 
                 if (endDateRegion.contains(x, y)) {
                     checkStartDate = false;
-                    //openDatePickerDialog(onDateSetListener, checkStartDate);
                     showDatePicker();
                     break;
                 }
@@ -145,7 +132,6 @@ public class CustomSliderView extends View {
                 break;
             case MotionEvent.ACTION_UP:
                 draggedMarker = null;
-
                 break;
 
             case MotionEvent.ACTION_MOVE:
@@ -158,38 +144,34 @@ public class CustomSliderView extends View {
 
         // tell the View to redraw the Canvas
         invalidate();
-//
+
         // tell the View that we handled the event
         return true;
-//
     }
 
-    private void showDatePicker() {
 
+    private void showDatePicker() {
         final Calendar c = Calendar.getInstance();
 
-
-            yearStr = c.get(Calendar.YEAR);
-            monthStr = c.get(Calendar.MONTH);
-            dayStr = c.get(Calendar.DAY_OF_MONTH);
-
+        yearStr = c.get(Calendar.YEAR);
+        monthStr = c.get(Calendar.MONTH);
+        dayStr = c.get(Calendar.DAY_OF_MONTH);
 
         final DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
-
             public void onDateSet(DatePicker view, int selectedYear,
                                   int selectedMonth, int selectedDay) {
-                //Log.d("log: ", "run OnDateSet method");
                 if (isOkayClicked) {
-                    if(checkStartDate){
-                        startDate = Integer.toString(selectedYear) + "/0" + Integer.toString(selectedMonth + 1) +  "/" + Integer.toString(selectedDay);
+                    if (checkStartDate) {
+                        startDate = Integer.toString(selectedYear) + "/0" + Integer.toString(selectedMonth + 1) + "/" + Integer.toString(selectedDay);
                         addProject.changeStartDate(startDate);
-                    }else{
-                        endDate =Integer.toString(selectedYear) + "/0" + Integer.toString(selectedMonth + 1) +  "/" + Integer.toString(selectedDay);
+                    } else {
+                        endDate = Integer.toString(selectedYear) + "/0" + Integer.toString(selectedMonth + 1) + "/" + Integer.toString(selectedDay);
                         addProject.changeEndDate(endDate);
                     }
                     yearStr = selectedYear;
                     monthStr = selectedMonth;
                     dayStr = selectedDay;
+
                 }
                 isOkayClicked = false;
             }
@@ -198,13 +180,14 @@ public class CustomSliderView extends View {
                 getContext(), datePickerListener,
                 yearStr, monthStr, dayStr);
 
-        if(checkStartDate){
+        if (checkStartDate) {
             datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
             Log.d("currentTimeMillis: ", Long.toString(System.currentTimeMillis()));
 
-        }else{
+
+        } else {
             datePickerDialog.getDatePicker().setMinDate(startDateInMillis);
-            Log.d("end date", Long.toString(startDateInMillis));
+            //Log.d("start date", Long.toString(startDateInMillis));
         }
 
         datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE,
@@ -234,47 +217,32 @@ public class CustomSliderView extends View {
                             c.set(Calendar.MONTH, datePicker.getMonth());
                             c.set(Calendar.YEAR, datePicker.getYear());
 
-                            startDateInMillis = c.getTimeInMillis();
-                            Log.d("start date", Long.toString(startDateInMillis));
-                            //if(!checkStartDate){
-                            //    //datePickerDialog.getDatePicker().setMinDate(startDateInMillis - 1000);
-                            //    //Log.d("startDateInMillis: ", Long.toString(startDateInMillis));
-                            //
-                            //}
+                            if(checkStartDate){
+                                startDateInMillis = c.getTimeInMillis();
+                                Log.d("start date after ok", Long.toString(startDateInMillis));
+                            }else{
+                                endDateInMillis = c.getTimeInMillis();
+                                Log.d("end date after ok", Long.toString(endDateInMillis));
+                            }
+
+                            if(addProject.isEndDateSet() && addProject.isStartDateSet()){
+                                discreteSlider();
+                            }
+
                         }
                     }
                 });
+
         datePickerDialog.setCancelable(false);
         datePickerDialog.show();
     }
 
-    private void openDatePickerDialog(DatePickerDialog.OnDateSetListener dateSetListener, final Boolean checkStartDate) {
-        final Calendar calendar = Calendar.getInstance();
-        DatePickerDialog dialog = new DatePickerDialog(
-                getContext(),
-                dateSetListener,
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH));
+    private void discreteSlider() {
+        //todo: discrete the slide.
+        dayCount = (endDateInMillis - startDateInMillis)/(1000 * 60 * 60 * 24);
+        int days = (int)dayCount + 1;
+        Log.d("days ", Integer.toString(days));
 
-        dialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                if (which == DialogInterface.BUTTON_POSITIVE) {
-                    String myFormat = "dd/MM/yy";
-                    SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-                    String newTime = sdf.format(calendar.getTime());
-                    if (checkStartDate) {
-                        //Log.d("choosed Start Date", newTime);
-                        addProject.changeStartDate(newTime);
-                    } else {
-                        //Log.d("choosed End Date", newTime);
-                        addProject.changeEndDate(newTime);
-                    }
-
-                }
-            }
-        });
-        dialog.show();
     }
 
 
@@ -293,13 +261,9 @@ public class CustomSliderView extends View {
         for (Rect eventMarker : eventMarkers) {
             canvas.drawRect(eventMarker, eventPaint);
         }
-
         canvas.drawRect(startDateRegion, dateRegionPaint);
         canvas.drawRect(endDateRegion, dateRegionPaint);
-
     }
-
-
 
     public void register(AddProject project) {
         this.addProject = project;
