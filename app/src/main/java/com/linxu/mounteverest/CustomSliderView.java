@@ -15,6 +15,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -93,11 +94,12 @@ public class CustomSliderView extends View {
         discreteMarkerPaint = new Paint();
         discreteMarkerPaint.setColor(Color.GRAY);
 
-        startDateRegion = new Rect(slider.left, slider.top - 100, slider.right, slider.top);
+
         dateRegionPaint = new Paint();
         dateRegionPaint.setColor(Color.CYAN);
 
-        endDateRegion = new Rect(slider.left, slider.bottom, slider.right, slider.bottom + 100);
+        startDateRegion = new Rect(slider.left, slider.bottom + 10, slider.right, slider.bottom + 100);
+        endDateRegion = new Rect(slider.left, slider.top - 100, slider.right, slider.top - 10);
     }
 
 
@@ -139,7 +141,11 @@ public class CustomSliderView extends View {
                 }
                 break;
             case MotionEvent.ACTION_UP:
+                if(draggedMarker != null){
+                    openDialog();
+                }
                 draggedMarker = null;
+
                 break;
 
             case MotionEvent.ACTION_MOVE:
@@ -162,6 +168,16 @@ public class CustomSliderView extends View {
         // tell the View that we handled the event
         return true;
     }
+
+    private void openDialog() {
+        final Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.set_learning_steps_dialog);
+        dialog.setTitle("Set Learning Steps");
+        //TextView text = (TextView)findViewById(R.id.set_learning_steps_text);
+        //text.setText("Do you want to set learning step on ?");
+        dialog.show();
+    }
+
 
 
     private void showDatePicker() {
@@ -254,13 +270,19 @@ public class CustomSliderView extends View {
     private void discreteSlider() {
         dayCount = (endDateInMillis - startDateInMillis)/(1000 * 60 * 60 * 24);
         int days = (int)dayCount + 1;
-        Log.d("days ", Integer.toString(days));
 
-        float diff = (slider.bottom - slider.top)/ days;
+
+        float diff = (slider.bottom - slider.top)/ (days + 1);
         discreteMarkers = new Rect[days];
 
-        for(int i = 1; i < discreteMarkers.length; i++){
-            discreteMarkers[i] = new Rect(slider.left, (int)(slider.top + diff * i - 25 ), slider.right, (int)(slider.top + 25 + diff*i));
+        Log.d("days ", Integer.toString(days));
+        Log.d("diff ", String.valueOf(diff));
+
+        for(int i = discreteMarkers.length -1 ; i >= 0; i--){
+            Log.d("i is: ", Integer.toString(i));
+            discreteMarkers[i] = new Rect(slider.left, (int)(slider.top + diff * (i + 1)  - 10 ), slider.right, (int)(slider.top + 10 + diff * (i + 1)));
+            Log.d("discreteMrker top: ", Integer.toString((int)(slider.top + diff * (i + 1)  - 10 )));
+            Log.d("discreteMrker bottom: ", Integer.toString((int)(slider.top + 10 + diff * (i + 1))));
         }
 
         slideDiscreteable = true;
