@@ -38,6 +38,7 @@ public class CustomSliderView extends View {
     private Paint eventPaint;
 
     private Rect[] discreteMarkers;
+    private Paint discreteMarkerPaint;
 
     private Rect startDateRegion;
     private Rect endDateRegion;
@@ -88,6 +89,9 @@ public class CustomSliderView extends View {
 
         eventPaint = new Paint();
         eventPaint.setColor(Color.BLACK);
+
+        discreteMarkerPaint = new Paint();
+        discreteMarkerPaint.setColor(Color.GRAY);
 
         startDateRegion = new Rect(slider.left, slider.top - 100, slider.right, slider.top);
         dateRegionPaint = new Paint();
@@ -140,8 +144,14 @@ public class CustomSliderView extends View {
 
             case MotionEvent.ACTION_MOVE:
                 if (draggedMarker != null) {
-                    draggedMarker.top = y - eventMarkerHeight / 2;
-                    draggedMarker.bottom = y + eventMarkerHeight / 2;
+                    //draggedMarker.top = y - eventMarkerHeight / 2;
+                    //draggedMarker.bottom = y + eventMarkerHeight / 2;
+                    for(Rect discreteMarker : discreteMarkers){
+                        if(discreteMarker != null && discreteMarker.contains(x,y) ){
+                            draggedMarker.top = discreteMarker.top;
+                            draggedMarker.bottom= discreteMarker.bottom;
+                        }
+                    }
                 }
                 break;
         }
@@ -242,7 +252,6 @@ public class CustomSliderView extends View {
     }
 
     private void discreteSlider() {
-        //todo: discrete the slide.
         dayCount = (endDateInMillis - startDateInMillis)/(1000 * 60 * 60 * 24);
         int days = (int)dayCount + 1;
         Log.d("days ", Integer.toString(days));
@@ -251,7 +260,7 @@ public class CustomSliderView extends View {
         discreteMarkers = new Rect[days];
 
         for(int i = 1; i < discreteMarkers.length; i++){
-            discreteMarkers[i] = new Rect(slider.left, (int)(slider.top + diff * i), slider.right, (int)(slider.top + 50 + diff*i));
+            discreteMarkers[i] = new Rect(slider.left, (int)(slider.top + diff * i - 25 ), slider.right, (int)(slider.top + 25 + diff*i));
         }
 
         slideDiscreteable = true;
@@ -270,9 +279,9 @@ public class CustomSliderView extends View {
     protected void onDraw(Canvas canvas) {
         canvas.drawRect(slider, sliderPaint);
 
-        if(slideDiscreteable){
-            for(int i = 1; i < discreteMarkers.length; i++){
-                canvas.drawRect(discreteMarkers[i], eventPaint);
+        if(slideDiscreteable) {
+            for (int i = 1; i < discreteMarkers.length; i++) {
+                canvas.drawRect(discreteMarkers[i], discreteMarkerPaint);
             }
         }
 
