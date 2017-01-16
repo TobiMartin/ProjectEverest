@@ -37,6 +37,8 @@ public class CustomSliderView extends View {
     private final int eventMarkerHeight = 80;
     private Paint eventPaint;
 
+    private Rect[] discreteMarkers;
+
     private Rect startDateRegion;
     private Rect endDateRegion;
     private Paint dateRegionPaint;
@@ -56,6 +58,8 @@ public class CustomSliderView extends View {
     private Long endDateInMillis;
 
     private float dayCount = 0f;
+
+    private boolean slideDiscreteable;
 
     public CustomSliderView(Context context) {
         super(context);
@@ -243,6 +247,14 @@ public class CustomSliderView extends View {
         int days = (int)dayCount + 1;
         Log.d("days ", Integer.toString(days));
 
+        float diff = (slider.bottom - slider.top)/ days;
+        discreteMarkers = new Rect[days];
+
+        for(int i = 1; i < discreteMarkers.length; i++){
+            discreteMarkers[i] = new Rect(slider.left, (int)(slider.top + diff * i), slider.right, (int)(slider.top + 50 + diff*i));
+        }
+
+        slideDiscreteable = true;
     }
 
 
@@ -258,9 +270,18 @@ public class CustomSliderView extends View {
     protected void onDraw(Canvas canvas) {
         canvas.drawRect(slider, sliderPaint);
 
+        if(slideDiscreteable){
+            for(int i = 1; i < discreteMarkers.length; i++){
+                canvas.drawRect(discreteMarkers[i], eventPaint);
+            }
+        }
+
         for (Rect eventMarker : eventMarkers) {
             canvas.drawRect(eventMarker, eventPaint);
         }
+
+
+
         canvas.drawRect(startDateRegion, dateRegionPaint);
         canvas.drawRect(endDateRegion, dateRegionPaint);
     }
