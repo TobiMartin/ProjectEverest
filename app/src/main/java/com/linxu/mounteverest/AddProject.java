@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.util.List;
+
 /**
  * Created by lin xu on 15.12.2016.
  */
@@ -16,6 +18,8 @@ public class AddProject extends AppCompatActivity {
 
     private TextView startTextView;
     private TextView endTextView;
+
+    private List<TextView> learingSteps;
 
     private boolean startDateSet = false;
     private boolean endDateSet = false;
@@ -40,6 +44,9 @@ public class AddProject extends AppCompatActivity {
         endTextView.setText(date);
         endDateSet = true;
     }
+
+
+
     public boolean isStartDateSet(){
         if(startDateSet){
             return true;
