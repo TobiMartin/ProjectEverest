@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -192,6 +193,22 @@ public class CustomSliderView extends View {
 
         EditText note = (EditText)dialog.findViewById(R.id.learning_step_note);
 
+        Button ok = (Button)dialog.findViewById(R.id.learning_step_dialog_ok_button);
+        Button cancel = (Button)dialog.findViewById(R.id.learning_step_dialog_cancel_button);
+
+        ok.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //todo: get date and note of this learning step to show on list view of addProject activity
+            }
+        });
+
+        cancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //todo: get rid of the chosen step, eventmarker should disappear.
+            }
+        });
         dialog.show();
     }
 
