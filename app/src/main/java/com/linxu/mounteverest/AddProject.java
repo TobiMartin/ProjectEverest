@@ -48,15 +48,11 @@ public class AddProject extends AppCompatActivity {
 
 
     public boolean isStartDateSet(){
-        if(startDateSet){
-            return true;
-        }
-        return false;
+
+        return startDateSet;
     }
     public boolean isEndDateSet(){
-        if(endDateSet){
-            return true;
-        }
-        return false;
+
+        return endDateSet;
     }
 }

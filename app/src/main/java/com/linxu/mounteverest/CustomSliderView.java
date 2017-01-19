@@ -232,6 +232,7 @@ public class CustomSliderView extends View {
                         endDate = Integer.toString(selectedYear) + "/0" + Integer.toString(selectedMonth + 1) + "/" + Integer.toString(selectedDay);
                         addProject.changeEndDate(endDate);
                     }
+
                     yearStr = selectedYear;
                     monthStr = selectedMonth;
                     dayStr = selectedDay;
@@ -290,9 +291,10 @@ public class CustomSliderView extends View {
                             }
 
                             if(addProject.isEndDateSet() && addProject.isStartDateSet()){
+                                //Log.d("onDraw: ", "showdiscreteSlider");
                                 discreteSlider();
                             }
-
+                            invalidate();
                         }
                     }
                 });
@@ -305,21 +307,15 @@ public class CustomSliderView extends View {
         dayCount = (endDateInMillis - startDateInMillis)/(1000 * 60 * 60 * 24);
         int days = (int)dayCount + 1;
 
-
-        float diff = (slider.bottom - slider.top)/ (days + 1);
         discreteMarkers = new Rect[days];
 
-        Log.d("days ", Integer.toString(days));
-        Log.d("diff ", String.valueOf(diff));
-
+        float diff = (slider.bottom - slider.top)/ (days + 1);
         for(int i = 0 ; i < discreteMarkers.length; i++){
-            Log.d("i is: ", Integer.toString(i));
             discreteMarkers[i] = new Rect(slider.left, (int)(slider.bottom - diff * (i + 1)  - 10 ), slider.right, (int)(slider.bottom - diff * (i + 1) + 10));
-            Log.d("discreteMrker top: ", Integer.toString((int)(slider.bottom - diff * (i + 1)  - 10 )));
-            Log.d("discreteMrker bottom: ", Integer.toString((int)(slider.bottom + 10 - diff * (i + 1))));
         }
-
         slideDiscreteable = true;
+
+        //invalidate();
     }
 
 
@@ -335,17 +331,19 @@ public class CustomSliderView extends View {
     protected void onDraw(Canvas canvas) {
         canvas.drawRect(slider, sliderPaint);
 
+        Log.d("isStartDateSet", ""+addProject.isStartDateSet());
+
+
+
         if(slideDiscreteable) {
-            for (int i = 0; i < discreteMarkers.length; i++) {
-                canvas.drawRect(discreteMarkers[i], discreteMarkerPaint);
+            for (Rect discreteMarker : discreteMarkers) {
+                canvas.drawRect(discreteMarker, discreteMarkerPaint);
             }
         }
 
         for (Rect eventMarker : eventMarkers) {
             canvas.drawRect(eventMarker, eventPaint);
         }
-
-
 
         canvas.drawRect(startDateRegion, dateRegionPaint);
         canvas.drawRect(endDateRegion, dateRegionPaint);
