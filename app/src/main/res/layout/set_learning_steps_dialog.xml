@@ -3,8 +3,49 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <TextView
-        android:layout_width="wrap_content"
+        android:text="TextView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/set_learning_steps_text"/>
+        android:id="@+id/set_learning_step_text" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="learning step title"
+        android:ems="10"
+        android:id="@+id/learning_step_title" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:text="Note for this step"
+        android:ems="10"
+        android:id="@+id/learning_step_note" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation = "horizontal"
+        android:weightSum = "2">
+
+        <Button
+            android:text="Cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight = "1"
+            android:id="@+id/learning_step_dialog_cancel_button" />
+
+        <Button
+            android:text="OK"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight = "1"
+            android:id="@+id/learning_step_dialog_ok_button" />
+    </LinearLayout>
+
+
 </LinearLayout>

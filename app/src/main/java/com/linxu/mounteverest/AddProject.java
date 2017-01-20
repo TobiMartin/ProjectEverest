@@ -3,10 +3,14 @@ package com.linxu.mounteverest;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.w3c.dom.Text;
+
+import java.util.List;
 
 /**
  * Created by lin xu on 15.12.2016.
@@ -17,8 +21,13 @@ public class AddProject extends AppCompatActivity {
     private TextView startTextView;
     private TextView endTextView;
 
+    private ListView listView;
+
+    private LearningStepAdapter learningStepAdapter;
+
     private boolean startDateSet = false;
     private boolean endDateSet = false;
+
 
     Bundle extras;
     @Override
@@ -29,6 +38,12 @@ public class AddProject extends AppCompatActivity {
         startTextView = (TextView)findViewById(R.id.startDate);
         endTextView = (TextView)findViewById(R.id.endDate);
         customSliderView.register(this);
+        listView = (ListView)findViewById(R.id.list_view);
+    }
+
+    public void upDateLearningSteps(List learningSteps){
+        learningStepAdapter = new LearningStepAdapter(AddProject.this, learningSteps);
+        listView.setAdapter(learningStepAdapter);
     }
 
     public void changeStartDate(String date) {
@@ -40,16 +55,12 @@ public class AddProject extends AppCompatActivity {
         endTextView.setText(date);
         endDateSet = true;
     }
+
     public boolean isStartDateSet(){
-        if(startDateSet){
-            return true;
-        }
-        return false;
+        return startDateSet;
     }
+
     public boolean isEndDateSet(){
-        if(endDateSet){
-            return true;
-        }
-        return false;
+        return endDateSet;
     }
 }
