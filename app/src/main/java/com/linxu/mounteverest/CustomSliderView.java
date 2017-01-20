@@ -70,7 +70,9 @@ public class CustomSliderView extends View {
 
     private int day;
 
-    private List<LearningStep> list;
+    private DateBaseHandler db;
+
+    //private List<LearningStep> list;
 
     public CustomSliderView(Context context) {
         super(context);
@@ -88,12 +90,24 @@ public class CustomSliderView extends View {
         int sideWidth = 200;
         int sideHeight = 1300;
 
+        //delete Database
+        //String[] dbs = this.databaseList();
+        //for (String x : dbs){
+        //    Log.d("DELET DB", x);
+        //    this.deleteDatabase(x);
+        //}
+
+        //if(db.getDatabaseName()!=""){
+        //    Log.d("delet db: ", "" + db);
+        //    getContext().deleteDatabase(db.getDatabaseName());
+        //}
+
         // create a slider that we'll draw later
         slider = new Rect(x, y, x + sideWidth, y + sideHeight);
 
         eventMarkers = new ArrayList<>();
 
-        list = new ArrayList<>();
+        //list = new ArrayList<>();
 
         // create the Paint and set its color
         sliderPaint = new Paint();
@@ -110,6 +124,8 @@ public class CustomSliderView extends View {
 
         startDateRegion = new Rect(slider.left, slider.bottom + 10, slider.right, slider.bottom + 100);
         endDateRegion = new Rect(slider.left, slider.top - 100, slider.right, slider.top - 10);
+
+        db = new DateBaseHandler(getContext());
     }
 
 
@@ -206,14 +222,16 @@ public class CustomSliderView extends View {
             public void onClick(View view) {
                 //todo: get date and note of this learning step to show on list view of addProject activity
                 LearningStep learningStep = new LearningStep(date, String.valueOf(title.getText()), String.valueOf(note.getText()));
-                list.add(learningStep);
-                Collections.sort(list, new Comparator<LearningStep>() {
+                db.addLearningStep(learningStep);
+                List<LearningStep> learningStepList = db.getAllLearningSteps();
+                //list.add(learningStep);
+                Collections.sort(learningStepList, new Comparator<LearningStep>() {
                     @Override
                     public int compare(LearningStep l1, LearningStep l2) {
                         return l1.getDate().compareToIgnoreCase(l2.getDate());
                     }
                 });
-                addProject.upDateLearningSteps(list);
+                addProject.upDateLearningSteps(learningStepList);
                 dialog.dismiss();
             }
         });
@@ -222,10 +240,14 @@ public class CustomSliderView extends View {
             @Override
             public void onClick(View view) {
                 //todo: get rid of the chosen step, eventmarker should disappear.
+                //dismissEventMarker(day);
+                dialog.dismiss();
             }
         });
         dialog.show();
     }
+
+
 
 
     private void showDatePicker() {
