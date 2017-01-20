@@ -23,6 +23,8 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -203,9 +205,16 @@ public class CustomSliderView extends View {
             @Override
             public void onClick(View view) {
                 //todo: get date and note of this learning step to show on list view of addProject activity
-                LearningStep learningStep = new LearningStep(date, String.valueOf(note.getText()), String.valueOf(title.getText()));
+                LearningStep learningStep = new LearningStep(date, String.valueOf(title.getText()), String.valueOf(note.getText()));
                 list.add(learningStep);
+                Collections.sort(list, new Comparator<LearningStep>() {
+                    @Override
+                    public int compare(LearningStep l1, LearningStep l2) {
+                        return l1.getDate().compareToIgnoreCase(l2.getDate());
+                    }
+                });
                 addProject.upDateLearningSteps(list);
+                dialog.dismiss();
             }
         });
 
@@ -217,6 +226,7 @@ public class CustomSliderView extends View {
         });
         dialog.show();
     }
+
 
     private void showDatePicker() {
         final Calendar c = Calendar.getInstance();
