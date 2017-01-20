@@ -68,7 +68,7 @@ public class CustomSliderView extends View {
 
     private int day;
 
-    private List<String> list;
+    private List<LearningStep> list;
 
     public CustomSliderView(Context context) {
         super(context);
@@ -204,8 +204,7 @@ public class CustomSliderView extends View {
             public void onClick(View view) {
                 //todo: get date and note of this learning step to show on list view of addProject activity
                 LearningStep learningStep = new LearningStep(date, String.valueOf(note.getText()), String.valueOf(title.getText()));
-                Log.d("learningStep: ",  "" + learningStep);
-                list.add(learningStep.toString());
+                list.add(learningStep);
                 addProject.upDateLearningSteps(list);
             }
         });

@@ -23,8 +23,11 @@ public class AddProject extends AppCompatActivity {
 
     private ListView listView;
 
+    private LearningStepAdapter learningStepAdapter;
+
     private boolean startDateSet = false;
     private boolean endDateSet = false;
+
 
     Bundle extras;
     @Override
@@ -39,8 +42,8 @@ public class AddProject extends AppCompatActivity {
     }
 
     public void upDateLearningSteps(List learningSteps){
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, learningSteps);
-        listView.setAdapter(arrayAdapter);
+        learningStepAdapter = new LearningStepAdapter(AddProject.this, learningSteps);
+        listView.setAdapter(learningStepAdapter);
     }
 
     public void changeStartDate(String date) {
