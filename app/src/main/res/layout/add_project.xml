@@ -1,34 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="3">
 
     <com.linxu.mounteverest.CustomSliderView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/slider"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_weight="1.6">
 
     </com.linxu.mounteverest.CustomSliderView>
 
-    <TextView
-        android:text="Dead Line"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/endDate"
-        android:layout_marginTop="48dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_weight="0.8"
+        android:layout_gravity="right">
 
-    <TextView
-        android:text="Start Date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/startDate"
-        android:layout_gravity="right"
-        android:layout_marginBottom="22dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/endDate" />
+        <TextView
+            android:text="Dead Line"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/endDate"
+            android:layout_marginTop="48dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
 
-</RelativeLayout>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/list_view"/>
+
+        <TextView
+            android:text="Start Date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/startDate"
+            android:layout_gravity="right"
+            android:layout_marginBottom="22dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@+id/endDate" />
+    </LinearLayout>
+
+</LinearLayout>

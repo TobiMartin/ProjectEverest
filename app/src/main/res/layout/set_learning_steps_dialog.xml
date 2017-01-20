@@ -14,6 +14,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
+        android:text="learning step title"
+        android:ems="10"
+        android:id="@+id/learning_step_title" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
         android:text="Note for this step"
         android:ems="10"
         android:id="@+id/learning_step_note" />

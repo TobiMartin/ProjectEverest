@@ -68,6 +68,8 @@ public class CustomSliderView extends View {
 
     private int day;
 
+    private List<String> list;
+
     public CustomSliderView(Context context) {
         super(context);
         init();
@@ -89,6 +91,8 @@ public class CustomSliderView extends View {
 
         eventMarkers = new ArrayList<>();
 
+        list = new ArrayList<>();
+
         // create the Paint and set its color
         sliderPaint = new Paint();
         sliderPaint.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
@@ -98,7 +102,6 @@ public class CustomSliderView extends View {
 
         discreteMarkerPaint = new Paint();
         discreteMarkerPaint.setColor(Color.GRAY);
-
 
         dateRegionPaint = new Paint();
         dateRegionPaint.setColor(Color.CYAN);
@@ -156,8 +159,6 @@ public class CustomSliderView extends View {
 
             case MotionEvent.ACTION_MOVE:
                 if (draggedMarker != null) {
-                    //draggedMarker.top = y - eventMarkerHeight / 2;
-                    //draggedMarker.bottom = y + eventMarkerHeight / 2;
                     for(int i = 0; i < discreteMarkers.length; i++){
                         if(discreteMarkers[i] != null && discreteMarkers[i].contains(x,y) ){
                             draggedMarker.top = discreteMarkers[i].top;
@@ -186,12 +187,14 @@ public class CustomSliderView extends View {
         cal.setTimeInMillis(startDateInMillis);
         cal.add(Calendar.DATE, day);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        String output = sdf.format(cal.getTime());
+        final String date = sdf.format(cal.getTime());
 
         TextView text = (TextView)dialog.findViewById(R.id.set_learning_step_text);
-        text.setText("Do you want to set learning step on ?" + output);
+        text.setText("Do you want to set learning step on " + date +" ?");
 
-        EditText note = (EditText)dialog.findViewById(R.id.learning_step_note);
+        final EditText note = (EditText)dialog.findViewById(R.id.learning_step_note);
+
+        final EditText title = (EditText)dialog.findViewById(R.id.learning_step_title);
 
         Button ok = (Button)dialog.findViewById(R.id.learning_step_dialog_ok_button);
         Button cancel = (Button)dialog.findViewById(R.id.learning_step_dialog_cancel_button);
@@ -200,6 +203,10 @@ public class CustomSliderView extends View {
             @Override
             public void onClick(View view) {
                 //todo: get date and note of this learning step to show on list view of addProject activity
+                LearningStep learningStep = new LearningStep(date, String.valueOf(note.getText()), String.valueOf(title.getText()));
+                Log.d("learningStep: ",  "" + learningStep);
+                list.add(learningStep.toString());
+                addProject.upDateLearningSteps(list);
             }
         });
 
@@ -211,8 +218,6 @@ public class CustomSliderView extends View {
         });
         dialog.show();
     }
-
-
 
     private void showDatePicker() {
         final Calendar c = Calendar.getInstance();
@@ -252,7 +257,6 @@ public class CustomSliderView extends View {
 
         } else {
             datePickerDialog.getDatePicker().setMinDate(startDateInMillis);
-            //Log.d("start date", Long.toString(startDateInMillis));
         }
 
         datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE,
@@ -291,7 +295,6 @@ public class CustomSliderView extends View {
                             }
 
                             if(addProject.isEndDateSet() && addProject.isStartDateSet()){
-                                //Log.d("onDraw: ", "showdiscreteSlider");
                                 discreteSlider();
                             }
                             invalidate();
@@ -314,8 +317,6 @@ public class CustomSliderView extends View {
             discreteMarkers[i] = new Rect(slider.left, (int)(slider.bottom - diff * (i + 1)  - 10 ), slider.right, (int)(slider.bottom - diff * (i + 1) + 10));
         }
         slideDiscreteable = true;
-
-        //invalidate();
     }
 
 
@@ -332,8 +333,6 @@ public class CustomSliderView extends View {
         canvas.drawRect(slider, sliderPaint);
 
         Log.d("isStartDateSet", ""+addProject.isStartDateSet());
-
-
 
         if(slideDiscreteable) {
             for (Rect discreteMarker : discreteMarkers) {
