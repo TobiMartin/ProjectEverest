@@ -23,6 +23,8 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.mikhaellopez.circularimageview.CircularImageView;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -60,6 +62,21 @@ public class MainActivity extends AppCompatActivity {
 
         climber.setX(380f);
         climber.setY(1000f);
+
+        CircularImageView circularImageView = (CircularImageView)findViewById(R.id.circle_image_view);
+        circularImageView.setX(140f);
+        circularImageView.setY(400f);
+        circularImageView.setScaleX(2f);
+        circularImageView.setScaleY(2f);
+        // Set Border
+        circularImageView.setBorderColor(Color.LTGRAY);
+        circularImageView.setBorderWidth(10);
+        // Add Shadow with default param
+        circularImageView.addShadow();
+        // or with custom param
+        circularImageView.setShadowRadius(15);
+        circularImageView.setShadowColor(Color.RED);
+
         //progressBar = (ProgressBar)findViewById(R.id.progressBar1);
         //extras = getIntent().getExtras();
         //validateEmptyProjectData();

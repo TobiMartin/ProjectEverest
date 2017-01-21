@@ -18,20 +18,36 @@
         android:id="@+id/progressBar1"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />-->
-    <ImageView
+
+
+    <!--<ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop = "true"
         android:src="@drawable/background"
         android:scaleType="fitXY"
         android:layout_centerHorizontal="true"
-        android:alpha="1"/>
+        android:alpha="1"/>-->
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:src="@drawable/background"
+        app:civ_border_color="#EEEEEE"
+        app:civ_border_width="4dp"
+        app:civ_shadow="true"
+        app:civ_shadow_radius="10"
+        app:civ_shadow_color="#8BC34A"
+        android:id="@+id/circle_image_view"
+        />
+
     <view
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         class="com.linxu.mounteverest.ProgressView"
         android:alpha="0.8"
         android:id="@+id/progress_view" />
+
 
     <pl.droidsonroids.gif.GifTextView
         android:id="@+id/climber_gif_text_view"
