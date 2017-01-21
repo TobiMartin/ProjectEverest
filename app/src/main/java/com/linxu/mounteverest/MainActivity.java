@@ -40,13 +40,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //progressView = (ProgressView)findViewById(R.id.progress_view);
-        //progressView.setOnClickListener(new View.OnClickListener() {
-        //    @Override
-        //    public void onClick(View view) {
-        //        zoomViewFromThumb();
-        //    }
-        //});
+        progressView = (ProgressView)findViewById(R.id.progress_view);
+        progressView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                zoomViewFromThumb();
+            }
+        });
 
         climber = (pl.droidsonroids.gif.GifTextView)findViewById(R.id.climber_gif_text_view);
         int mm = 4;

@@ -18,11 +18,19 @@
         android:id="@+id/progressBar1"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />-->
-
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop = "true"
+        android:src="@drawable/background"
+        android:scaleType="fitXY"
+        android:layout_centerHorizontal="true"
+        android:alpha="1"/>
     <view
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         class="com.linxu.mounteverest.ProgressView"
+        android:alpha="0.8"
         android:id="@+id/progress_view" />
 
     <pl.droidsonroids.gif.GifTextView
@@ -31,4 +39,5 @@
         android:layout_height="wrap_content"
         android:background="@drawable/climber_transparent"
         />
+
 </RelativeLayout>
