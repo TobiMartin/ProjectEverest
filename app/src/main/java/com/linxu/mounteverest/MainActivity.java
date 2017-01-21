@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         //});
 
         climber = (pl.droidsonroids.gif.GifTextView)findViewById(R.id.climber_gif_text_view);
-        int mm = 5;
+        int mm = 4;
         Drawable d = getResources().getDrawable(R.drawable.climber_transparent);
         int h = d.getIntrinsicHeight();
         int w = d.getIntrinsicWidth();
@@ -58,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
         RelativeLayout.LayoutParams parm = new RelativeLayout.LayoutParams(w/mm, h/mm);
         climber.setLayoutParams(parm);
 
-        climber.setX(400f);
-        climber.setY(800f);
+        climber.setX(380f);
+        climber.setY(1000f);
         //progressBar = (ProgressBar)findViewById(R.id.progressBar1);
         //extras = getIntent().getExtras();
         //validateEmptyProjectData();
