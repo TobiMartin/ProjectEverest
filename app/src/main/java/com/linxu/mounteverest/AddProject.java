@@ -1,9 +1,11 @@
 package com.linxu.mounteverest;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +30,8 @@ public class AddProject extends AppCompatActivity {
     private boolean startDateSet = false;
     private boolean endDateSet = false;
 
+    private Button addProjectDone;
+
 
     Bundle extras;
     @Override
@@ -39,6 +43,15 @@ public class AddProject extends AppCompatActivity {
         endTextView = (TextView)findViewById(R.id.endDate);
         customSliderView.register(this);
         listView = (ListView)findViewById(R.id.list_view);
+
+        addProjectDone = (Button)findViewById(R.id.add_project_done);
+        addProjectDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AddProject.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void upDateLearningSteps(List learningSteps){
