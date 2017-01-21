@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -71,8 +72,6 @@ public class CustomSliderView extends View {
     private int day;
 
     private DateBaseHandler db;
-
-    //private List<LearningStep> list;
 
     public CustomSliderView(Context context) {
         super(context);
@@ -216,7 +215,6 @@ public class CustomSliderView extends View {
         ok.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                //todo: get date and note of this learning step to show on list view of addProject activity
                 LearningStep learningStep = new LearningStep(date, String.valueOf(title.getText()), String.valueOf(note.getText()));
                 db.addLearningStep(learningStep);
                 List<LearningStep> learningStepList = db.getAllLearningSteps();
