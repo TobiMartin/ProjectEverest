@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "125613376626",
+    "firebase_url": "https://mounteverest-13ffd.firebaseio.com",
+    "project_id": "mounteverest-13ffd",
+    "storage_bucket": "mounteverest-13ffd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:125613376626:android:53230f3a46f1b41b",
+        "android_client_info": {
+          "package_name": "com.linxu.mounteverest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "125613376626-1uu2qc68d9neb6q3b09bhbcnsv2mv8g3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.linxu.mounteverest",
+            "certificate_hash": "6BDAB565B93A7D4DBF1B5E906483EF1068866C3D"
+          }
+        },
+        {
+          "client_id": "125613376626-tbd3jd9pg1qvsf6q1m9ij56b5qe78hfc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9hg0LVIg49OEgox4OaQC3AlfggZr_Fos"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "125613376626-tbd3jd9pg1qvsf6q1m9ij56b5qe78hfc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

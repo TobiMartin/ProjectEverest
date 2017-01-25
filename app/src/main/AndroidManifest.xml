@@ -18,6 +18,7 @@
         <activity android:name=".AddProject"></activity>
         <activity android:name=".Profile"></activity>
         <activity android:name=".Search"></activity>
+        <activity android:name=".SignInActivity"></activity>
     </application>
 
 

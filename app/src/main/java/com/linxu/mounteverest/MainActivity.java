@@ -1,12 +1,8 @@
 package com.linxu.mounteverest;
 
-import android.animation.Animator;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,22 +10,17 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     //private ProgressBar progressBar;
     //LinearLayout ll;
     //Bundle extras;
@@ -37,10 +28,47 @@ public class MainActivity extends AppCompatActivity {
     private pl.droidsonroids.gif.GifTextView climber;
     //private Animator mCurrentAnimator;
 
+    // Firebase instance variables
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
+    //private DatabaseReference mFirebaesDatabaseReference;
+    //private FirebaseRecyclerAdapter<FriendlyMessage, MessageViewHolder> mFirebaseAdapter;
+    //private FirebaseRemoteConfig mFirebaseRemoteConfig;
+    //private FirebaseAnalytics mFirebaseAnalytics;
+
+    private String mUsername;
+    private String mPhotoUrl;
+    private GoogleApiClient googleApiClient;
+
+    public static final String ANONYMOUS = "anonymous";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Initialize Firebase Auth
+        // Set default username is anonymous.
+        mUsername = ANONYMOUS;
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        if (mFirebaseUser == null) {
+            // Not signed in, launch the Sign In activity
+            startActivity(new Intent(this, SignInActivity.class));
+            finish();
+            return;
+        } else {
+            mUsername = mFirebaseUser.getDisplayName();
+            if (mFirebaseUser.getPhotoUrl() != null) {
+                mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
+            }
+        }
+
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API)
+                //.addApi(AppInvite.API)
+                .build();
 
         progressView = (ProgressView)findViewById(R.id.progress_view);
         progressView.setOnClickListener(new View.OnClickListener() {
@@ -147,8 +175,19 @@ public class MainActivity extends AppCompatActivity {
             case R.id.add_project:
                 startActivity(new Intent(this, AddProject.class));
                 return true;
+            case R.id.sign_out_menu:
+                mFirebaseAuth.signOut();
+                Auth.GoogleSignInApi.signOut(googleApiClient);
+                mUsername = ANONYMOUS;
+                startActivity(new Intent(this, SignInActivity.class));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
     }
 }

@@ -35,4 +35,11 @@ dependencies {
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.1.+'
 
     compile 'com.mikhaellopez:circularimageview:3.0.2'
+
+    //firebase Auth dependency
+    compile 'com.google.firebase:firebase-auth:10.0.0'
+    compile 'com.google.android.gms:play-services-auth:10.0.0'
 }
+
+//firebase plugin
+apply plugin: 'com.google.gms.google-services'
