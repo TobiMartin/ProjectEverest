@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(this, Search.class));
                 return true;
             case R.id.profile:
-                startActivity(new Intent(this, Profile.class));
+                startActivity(new Intent(this, SignInFirebaseActivity.class));
                 return true;
             case R.id.add_project:
                 startActivity(new Intent(this, AddProject.class));

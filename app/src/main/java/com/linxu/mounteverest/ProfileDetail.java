@@ -1,0 +1,66 @@
+package com.linxu.mounteverest;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.ImageView;
+import android.widget.TextView;
+import java.io.InputStream;
+
+public class ProfileDetail extends AppCompatActivity {
+
+    private static final String TAG = "ProfileDetail";
+    private User user;
+
+    ImageView profilePicture;
+    TextView profileName;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profile_detail);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null)
+        {
+            user = (User) extras.getSerializable("User");
+            Log.d(TAG, "DETAIL: " + user.getUsername());
+        }
+
+        profileName= (TextView) findViewById(R.id.profile_name);
+        profileName.setText(user.getUsername());
+
+        new DownloadImageTask((ImageView) findViewById(R.id.profile_picture))
+                .execute(user.getPhoto());
+
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
+    }
+}
+
