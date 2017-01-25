@@ -18,6 +18,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
@@ -31,7 +33,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
-    //private DatabaseReference mFirebaesDatabaseReference;
+    //private FirebaseDatabase mFirebaseDatabase;
+    //private DatabaseReference mLearningProjectDatabaseReference;
     //private FirebaseRecyclerAdapter<FriendlyMessage, MessageViewHolder> mFirebaseAdapter;
     //private FirebaseRemoteConfig mFirebaseRemoteConfig;
     //private FirebaseAnalytics mFirebaseAnalytics;
@@ -50,6 +53,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         // Initialize Firebase Auth
         // Set default username is anonymous.
         mUsername = ANONYMOUS;
+
+        //mFirebaseDatabase = FirebaseDatabase.getInstance();
+        //mLearningProjectDatabaseReference = mFirebaseDatabase.getReference().child("learning_project");
+
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         if (mFirebaseUser == null) {

@@ -36,9 +36,10 @@ dependencies {
 
     compile 'com.mikhaellopez:circularimageview:3.0.2'
 
-    //firebase Auth dependency
-    compile 'com.google.firebase:firebase-auth:10.0.0'
-    compile 'com.google.android.gms:play-services-auth:10.0.0'
+    //firebase dependency
+    compile 'com.google.firebase:firebase-auth:10.0.1'
+    compile 'com.google.android.gms:play-services-auth:10.0.1'
+    compile 'com.google.firebase:firebase-database:10.0.1'
 }
 
 //firebase plugin
