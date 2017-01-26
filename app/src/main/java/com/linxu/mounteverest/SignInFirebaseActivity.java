@@ -250,6 +250,7 @@ public class SignInFirebaseActivity extends BaseActivity implements
     private void revokeAccess() {
         // Firebase sign out
         mAuth.signOut();
+        myRef.child(currentUser.getId()).removeValue();
 
         // Google revoke access
         Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
