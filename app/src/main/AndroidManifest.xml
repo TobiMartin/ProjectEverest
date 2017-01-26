@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.linxu.mounteverest">
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
     <application
         android:allowBackup="true"
@@ -16,9 +17,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddProject"></activity>
-        <activity android:name=".Profile"></activity>
+        <activity android:name=".ProfileDetail"></activity>
         <activity android:name=".Search"></activity>
         <activity android:name=".SignInActivity"></activity>
+        <activity android:name=".ViewProfiles"></activity>
     </application>
 
 

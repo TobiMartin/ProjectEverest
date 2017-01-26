@@ -15,12 +15,14 @@ import android.widget.RelativeLayout;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.mikhaellopez.circularimageview.CircularImageView;
+
+import java.io.Serializable;
+import java.util.List;
+
+
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     //private ProgressBar progressBar;
@@ -44,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private GoogleApiClient googleApiClient;
 
     public static final String ANONYMOUS = "anonymous";
+    //private User currentUser;
+    //private List<User> userList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,10 +178,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search:
-                startActivity(new Intent(this, Search.class));
+                startSearch();
                 return true;
             case R.id.profile:
-                startActivity(new Intent(this, Profile.class));
+                startProfile();
                 return true;
             case R.id.add_project:
                 startActivity(new Intent(this, AddProject.class));
@@ -191,6 +195,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void startProfile() {
+        Intent intent = new Intent(this, ProfileDetail.class);
+        //intent.putExtra("User", currentUser);
+        startActivity(intent);
+    }
+
+    private void startSearch() {
+        Intent intent = new Intent(this, ViewProfiles.class);
+        //intent.putExtra("UserList", (Serializable)userList);
+        startActivity(intent);
     }
 
     @Override

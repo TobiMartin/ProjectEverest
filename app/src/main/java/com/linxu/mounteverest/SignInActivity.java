@@ -26,6 +26,10 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
+
+
 /**
  * Created by lin xu on 25.01.2017.
  */
@@ -40,6 +44,19 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mUserDatabaseReference;
 
+    public static List<User> getUserList() {
+        return userList;
+    }
+
+    //sqlite
+    //private DateBaseHandler db;
+    private static List<User> userList;
+
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+    private static User currentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +65,8 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         signInButton = (SignInButton)findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setOnClickListener(this);
+
+        userList = new ArrayList<User>();
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mUserDatabaseReference = mFirebaseDatabase.getReference();
@@ -111,8 +130,10 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle: " + acct.getId());
-        mUserDatabaseReference.child("User").child(acct.getId()).child("user_name").setValue(acct.getDisplayName());
-
+        User user = new User(acct.getId(), acct.getDisplayName(), acct.getEmail(), String.valueOf(acct.getPhotoUrl()));
+        currentUser = user;
+        mUserDatabaseReference.child("User").child(user.getId()).setValue(user);
+        addUserToList(user);
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mFirebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -130,6 +151,18 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 }
             }
         });
+    }
+
+    private void addUserToList(User user) {
+        boolean doit = true;
+        for(User element: getUserList()){
+            if(element.getId().equals(user.getId())){
+                doit = false;
+            }
+        }
+        if(doit){
+            getUserList().add(user);
+        }
     }
 
 

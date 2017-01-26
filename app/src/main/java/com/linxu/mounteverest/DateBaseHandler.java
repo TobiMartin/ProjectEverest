@@ -25,6 +25,10 @@ public class DateBaseHandler extends SQLiteOpenHelper {
     private static final String KEY_TITLE = "title";
     private static final String KEY_NOTE = "note";
 
+    private static final String KEY_USER_ID = "userID";
+    private static final String KEY_USER_NAME = "userName";
+    private static final String KEY_USER_EMAIL = "userEmail";
+    private static final String KEY_USER_PHOTOURL = "userPhotoUrl";
     public DateBaseHandler(Context context){
         super (context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -57,6 +61,12 @@ public class DateBaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    //public void addUser(User user){
+    //    SQLiteDatabase db = this.getWritableDatabase();
+    //    ContentValues values = new ContentValues();
+    //    //valuew.put()
+    //}
+
     public List<LearningStep> getAllLearningSteps(){
         List<LearningStep> learningStepList = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + TABLE_LEARNING_STEPS_HISTORY + " ORDER BY " + KEY_DATE + " DESC";
@@ -79,4 +89,5 @@ public class DateBaseHandler extends SQLiteOpenHelper {
         }
         return learningStepList;
     }
+
 }
