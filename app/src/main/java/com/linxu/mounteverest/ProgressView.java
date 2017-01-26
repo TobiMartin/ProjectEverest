@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 
@@ -65,12 +66,29 @@ public class ProgressView extends View{
         db = new DateBaseHandler(getContext());
     }
 
-    @Override
+   /* @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawRect(progressBar, progressBarPaint);
 
         for(Rect ladderMarker : ladderMarkers){
             canvas.drawRect(ladderMarker, ladderPaint);
         }
+    } */
+
+    public Rect getProgressBar(){
+        return progressBar;
     }
+
+    public Paint getProgressBarPaint(){
+        return progressBarPaint;
+    }
+
+    public ArrayList<Rect> getLadderMarks(){
+        return ladderMarkers;
+    }
+
+    public Paint getLadderPaint(){
+        return ladderPaint;
+    }
+
 }
