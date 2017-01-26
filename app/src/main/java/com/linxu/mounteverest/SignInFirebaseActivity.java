@@ -61,6 +61,7 @@ public class SignInFirebaseActivity extends BaseActivity implements
     DatabaseReference myRef;
 
     private List<User> userList;
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +77,7 @@ public class SignInFirebaseActivity extends BaseActivity implements
         findViewById(R.id.sign_out_button).setOnClickListener(this);
         findViewById(R.id.disconnect_button).setOnClickListener(this);
         findViewById(R.id.view_profiles_button).setOnClickListener(this);
+        findViewById(R.id.my_projects).setOnClickListener(this);
 
         // [START config_signin]
         // Configure Google Sign In
@@ -262,11 +264,12 @@ public class SignInFirebaseActivity extends BaseActivity implements
     private void updateUI(FirebaseUser user) {
         hideProgressDialog();
         if (user != null) {
-            mStatusTextView.setText(getString(R.string.google_status_fmt, user.getEmail()));
+            mStatusTextView.setText(getString(R.string.google_status_fmt, user.getDisplayName()));
             mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
 
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
+            findViewById(R.id.my_projects).setVisibility(View.VISIBLE);
 
             name = user.getDisplayName();
             email = user.getEmail();
@@ -282,6 +285,7 @@ public class SignInFirebaseActivity extends BaseActivity implements
 
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
+            findViewById(R.id.my_projects).setVisibility(View.GONE);
         }
     }
 
@@ -305,6 +309,15 @@ public class SignInFirebaseActivity extends BaseActivity implements
         } else if (i == R.id.view_profiles_button) {
             viewprofiles();
         }
+        else if (i == R.id.my_projects) {
+            myProfile();
+        }
+    }
+
+    private void myProfile () {
+        Intent intent = new Intent(this, ProfileDetail.class);
+        intent.putExtra("User", currentUser);
+        startActivity(intent);
     }
 
     private void viewprofiles () {
@@ -327,6 +340,7 @@ public class SignInFirebaseActivity extends BaseActivity implements
 
     private void writeNewUser (String userId, String name, String email, String photo) {
         final User user = new User(userId, name, email, photo);
+        currentUser = user;
         myRef.child(userId).setValue(user);
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
