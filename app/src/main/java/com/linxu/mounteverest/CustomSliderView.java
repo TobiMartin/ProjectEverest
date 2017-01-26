@@ -21,6 +21,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -78,6 +81,9 @@ public class CustomSliderView extends View {
 
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mLearningStepsDatabaseReference;
+    private ChildEventListener mChildEventListener;
+
+    private LearningStepAdapter mLearningStepAdapter;
 
     public CustomSliderView(Context context) {
         super(context);
@@ -131,7 +137,6 @@ public class CustomSliderView extends View {
         //firebase database initialize
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mLearningStepsDatabaseReference = mFirebaseDatabase.getReference();
-
     }
 
 
