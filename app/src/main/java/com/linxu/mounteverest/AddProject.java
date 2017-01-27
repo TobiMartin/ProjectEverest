@@ -10,6 +10,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import org.w3c.dom.Text;
 
 import java.util.List;
@@ -33,11 +36,13 @@ public class AddProject extends AppCompatActivity {
     private Button addProjectDone;
 
 
+
     Bundle extras;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_project);
+
         customSliderView = (CustomSliderView)findViewById(R.id.slider);
         startTextView = (TextView)findViewById(R.id.startDate);
         endTextView = (TextView)findViewById(R.id.endDate);
@@ -48,6 +53,7 @@ public class AddProject extends AppCompatActivity {
         addProjectDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(AddProject.this, MainActivity.class);
                 startActivity(intent);
             }

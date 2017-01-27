@@ -1,9 +1,5 @@
 package com.linxu.mounteverest;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,8 +11,15 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-public class ProfilesList extends ListFragment {
+/**
+ * Created by lin xu on 26.01.2017.
+ */
+
+public class ProfilesList extends ListFragment{
 
     private static final String TAG = "ProfilesList";
     private List<User> userList;
@@ -26,7 +29,7 @@ public class ProfilesList extends ListFragment {
     ArrayList<String> userID = new ArrayList<String>();
 
     private void getUserInfo () {
-        userList = ViewProfiles.getUserList();
+        userList = SignInActivity.getUserList();
 
         if (userList != null) {
             for (User element : userList) {
@@ -41,7 +44,7 @@ public class ProfilesList extends ListFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         getUserInfo ();
         for (String element : userID)

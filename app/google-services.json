@@ -1,87 +1,37 @@
 {
   "project_info": {
-    "project_number": "563874867900",
-    "firebase_url": "https://fir-profiltest.firebaseio.com",
-    "project_id": "firebase-profiltest",
-    "storage_bucket": "firebase-profiltest.appspot.com"
+
+    "project_number": "125613376626",
+    "firebase_url": "https://mounteverest-13ffd.firebaseio.com",
+    "project_id": "mounteverest-13ffd",
+    "storage_bucket": "mounteverest-13ffd.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:563874867900:android:cb0c7246ad0b8127",
-        "android_client_info": {
-          "package_name": "com.example.tobim.profiltest"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "563874867900-ovb8n81u6p6dl89qat2rvlne0uapailv.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.tobim.profiltest",
-            "certificate_hash": "71AE58DCCD16756BB97B5B61FA31B9E4FAC88584"
-          }
-        },
-        {
-          "client_id": "563874867900-bmknmmu8av9j07tujtvv8lvj0vo1o5e5.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "563874867900-v9q1fg5bp5rod3v7tvjreac439d92jtc.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBYEjO4YNaHhxYuSLWq8KW_yeaCH3sIt1I"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "563874867900-bmknmmu8av9j07tujtvv8lvj0vo1o5e5.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:563874867900:android:53230f3a46f1b41b",
+        "mobilesdk_app_id": "1:125613376626:android:53230f3a46f1b41b",
         "android_client_info": {
           "package_name": "com.linxu.mounteverest"
         }
       },
       "oauth_client": [
         {
-          "client_id": "563874867900-1lottv90sqgpa6i8ughsg7pc3ussp1qn.apps.googleusercontent.com",
+
+          "client_id": "125613376626-1uu2qc68d9neb6q3b09bhbcnsv2mv8g3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.linxu.mounteverest",
-            "certificate_hash": "71AE58DCCD16756BB97B5B61FA31B9E4FAC88584"
+            "certificate_hash": "6BDAB565B93A7D4DBF1B5E906483EF1068866C3D"
           }
         },
         {
-          "client_id": "563874867900-bmknmmu8av9j07tujtvv8lvj0vo1o5e5.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "563874867900-v9q1fg5bp5rod3v7tvjreac439d92jtc.apps.googleusercontent.com",
+          "client_id": "125613376626-tbd3jd9pg1qvsf6q1m9ij56b5qe78hfc.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBYEjO4YNaHhxYuSLWq8KW_yeaCH3sIt1I"
+          "current_key": "AIzaSyB9hg0LVIg49OEgox4OaQC3AlfggZr_Fos"
         }
       ],
       "services": {
@@ -92,7 +42,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "563874867900-bmknmmu8av9j07tujtvv8lvj0vo1o5e5.apps.googleusercontent.com",
+              "client_id": "125613376626-tbd3jd9pg1qvsf6q1m9ij56b5qe78hfc.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

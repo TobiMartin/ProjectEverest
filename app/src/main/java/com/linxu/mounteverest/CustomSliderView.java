@@ -21,6 +21,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -73,6 +79,12 @@ public class CustomSliderView extends View {
 
     private DateBaseHandler db;
 
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mLearningStepsDatabaseReference;
+    private ChildEventListener mChildEventListener;
+
+    private LearningStepAdapter mLearningStepAdapter;
+
     public CustomSliderView(Context context) {
         super(context);
         init();
@@ -121,6 +133,10 @@ public class CustomSliderView extends View {
         endDateRegion = new Rect(slider.left, slider.top - 100, slider.right, slider.top - 10);
 
         db = new DateBaseHandler(getContext());
+
+        //firebase database initialize
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mLearningStepsDatabaseReference = mFirebaseDatabase.getReference();
     }
 
 
@@ -216,6 +232,8 @@ public class CustomSliderView extends View {
             @Override
             public void onClick(View view) {
                 LearningStep learningStep = new LearningStep(date, String.valueOf(title.getText()), String.valueOf(note.getText()));
+                mLearningStepsDatabaseReference.child("learning_step").push().setValue(learningStep);
+
                 db.addLearningStep(learningStep);
                 List<LearningStep> learningStepList = db.getAllLearningSteps();
                 //list.add(learningStep);

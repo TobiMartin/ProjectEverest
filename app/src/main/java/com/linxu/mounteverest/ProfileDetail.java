@@ -3,15 +3,19 @@ package com.linxu.mounteverest;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import java.io.InputStream;
 
-public class ProfileDetail extends AppCompatActivity {
-
+/**
+ * Created by lin xu on 03.12.2016.
+ */
+public class ProfileDetail extends AppCompatActivity{
     private static final String TAG = "ProfileDetail";
     private User user;
 
@@ -23,19 +27,19 @@ public class ProfileDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_detail);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null)
-        {
-            user = (User) extras.getSerializable("User");
-            Log.d(TAG, "DETAIL: " + user.getUsername());
-        }
+        //Bundle extras = getIntent().getExtras();
+        //if (extras != null)
+        //{
+        //    user = (User) extras.getSerializable("User");
+        //    Log.d(TAG, "DETAIL: " + user.getUsername());
+        //}
+
+        user = SignInActivity.getCurrentUser();
 
         profileName= (TextView) findViewById(R.id.profile_name);
         profileName.setText(user.getUsername());
 
-        new DownloadImageTask((ImageView) findViewById(R.id.profile_picture))
-                .execute(user.getPhoto());
-
+        new DownloadImageTask((ImageView) findViewById(R.id.profile_picture)).execute(user.getPhoto());
     }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {

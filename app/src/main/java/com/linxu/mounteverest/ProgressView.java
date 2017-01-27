@@ -66,14 +66,14 @@ public class ProgressView extends View{
         db = new DateBaseHandler(getContext());
     }
 
-   /* @Override
+    @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawRect(progressBar, progressBarPaint);
 
         for(Rect ladderMarker : ladderMarkers){
             canvas.drawRect(ladderMarker, ladderPaint);
         }
-    } */
+    }
 
     public Rect getProgressBar(){
         return progressBar;
