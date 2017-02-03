@@ -78,6 +78,8 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 .requestEmail()
                 .build();
 
+        Log.d("signInOptions", "" + gso);
+
         // Build a GoogleApiClient with access to the Google Sign-In API and the
         // options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -117,6 +119,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            Log.d("result: ", "" + result.getStatus());
             if(result.isSuccess()){
                 //Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
