@@ -1,6 +1,5 @@
 {
   "project_info": {
-
     "project_number": "125613376626",
     "firebase_url": "https://mounteverest-13ffd.firebaseio.com",
     "project_id": "mounteverest-13ffd",
@@ -15,15 +14,6 @@
         }
       },
       "oauth_client": [
-        {
-
-          "client_id": "125613376626-1uu2qc68d9neb6q3b09bhbcnsv2mv8g3.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.linxu.mounteverest",
-            "certificate_hash": "6BDAB565B93A7D4DBF1B5E906483EF1068866C3D"
-          }
-        },
         {
           "client_id": "125613376626-tbd3jd9pg1qvsf6q1m9ij56b5qe78hfc.apps.googleusercontent.com",
           "client_type": 3
