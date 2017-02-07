@@ -23,13 +23,14 @@ public class ProfilesList extends ListFragment{
 
     private static final String TAG = "ProfilesList";
     private List<User> userList;
+    private SignInActivity signInActivity = new SignInActivity();
 
-    ArrayList<String> userNames = new ArrayList<String>();
-    ArrayList<String> userPhotos = new ArrayList<String>();
-    ArrayList<String> userID = new ArrayList<String>();
+    ArrayList<String> userNames = new ArrayList<>();
+    ArrayList<String> userPhotos = new ArrayList<>();
+    ArrayList<String> userID = new ArrayList<>();
 
     private void getUserInfo () {
-        userList = SignInActivity.getUserList();
+        userList = signInActivity.getUserList();
 
         if (userList != null) {
             for (User element : userList) {
@@ -51,10 +52,10 @@ public class ProfilesList extends ListFragment{
             Log.d(TAG, element);
 
         // Each row in the list stores country name, currency and flag
-        List<HashMap<String,String>> aList = new ArrayList<HashMap<String,String>>();
+        List<HashMap<String,String>> aList = new ArrayList<>();
 
         for(int i = 0; i < userID.size(); i++){
-            HashMap<String, String> hm = new HashMap<String,String>();
+            HashMap<String, String> hm = new HashMap<>();
 
             Uri uri =  Uri.parse(userPhotos.get(i));
 

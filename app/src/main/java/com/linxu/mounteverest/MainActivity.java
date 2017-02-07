@@ -19,6 +19,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;;
+import com.google.firebase.database.FirebaseDatabase;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.io.Serializable;
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private GoogleApiClient googleApiClient;
 
     public static final String ANONYMOUS = "anonymous";
+
+    //private FirebaseDateBaseHandler firebaseDateBaseHandler;
     //private User currentUser;
     //private List<User> userList;
 
@@ -57,6 +60,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         // Initialize Firebase Auth
         // Set default username is anonymous.
         mUsername = ANONYMOUS;
+
+        //firebaseDateBaseHandler = new FirebaseDateBaseHandler();
+        //firebaseDateBaseHandler.Init();
 
         //mFirebaseDatabase = FirebaseDatabase.getInstance();
         //mLearningProjectDatabaseReference = mFirebaseDatabase.getReference().child("learning_project");
@@ -128,6 +134,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private void zoomViewFromThumb() {
         //todo: do zoom in animation
     }
+
+
 
     //private void validateEmptyProjectData() {
     //    if(extras == null){

@@ -1,6 +1,7 @@
 package com.linxu.mounteverest;
 
 import java.io.Serializable;
+import java.util.List;
 
 
 /**
@@ -13,6 +14,7 @@ public class User implements Serializable{
     public String username;
     public String email;
     public String photo;
+    //public List<LearningStep> learningSteps;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(com.example.tobim.profiltest.User.class)
@@ -23,6 +25,7 @@ public class User implements Serializable{
         this.username = username;
         this.email = email;
         this.photo = photo;
+        //this.learningSteps = learningSteps;
     }
 
     public String getId() { return id; }
@@ -38,5 +41,9 @@ public class User implements Serializable{
     public String getEmail() {
         return email;
     }
+
+    //public List<LearningStep> learningSteps(){
+    //    return learningSteps;
+    //}
 }
 

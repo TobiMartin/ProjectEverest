@@ -77,13 +77,14 @@ public class CustomSliderView extends View {
 
     private int day;
 
-    private DateBaseHandler db;
+    private static List<LearningStep> learningStepList;
 
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mLearningStepsDatabaseReference;
-    private ChildEventListener mChildEventListener;
 
     private LearningStepAdapter mLearningStepAdapter;
+
+
 
     public CustomSliderView(Context context) {
         super(context);
@@ -131,12 +132,13 @@ public class CustomSliderView extends View {
 
         startDateRegion = new Rect(slider.left, slider.bottom + 10, slider.right, slider.bottom + 100);
         endDateRegion = new Rect(slider.left, slider.top - 100, slider.right, slider.top - 10);
-
-        db = new DateBaseHandler(getContext());
+        //db = new DateBaseHandler(getContext());
 
         //firebase database initialize
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mLearningStepsDatabaseReference = mFirebaseDatabase.getReference();
+        mFirebaseDatabase = SignInActivity.getmFirebaseDatabase();
+        mLearningStepsDatabaseReference = mFirebaseDatabase.getReference().child("User").child(SignInActivity.getCurrentUser().getId()).child("learning steps");
+
+        learningStepList = new ArrayList<>();
     }
 
 
@@ -233,10 +235,8 @@ public class CustomSliderView extends View {
             public void onClick(View view) {
                 LearningStep learningStep = new LearningStep(date, String.valueOf(title.getText()), String.valueOf(note.getText()));
                 mLearningStepsDatabaseReference.child("learning_step").push().setValue(learningStep);
+                learningStepList.add(learningStep);
 
-                db.addLearningStep(learningStep);
-                List<LearningStep> learningStepList = db.getAllLearningSteps();
-                //list.add(learningStep);
                 Collections.sort(learningStepList, new Comparator<LearningStep>() {
                     @Override
                     public int compare(LearningStep l1, LearningStep l2) {
@@ -347,6 +347,10 @@ public class CustomSliderView extends View {
 
         datePickerDialog.setCancelable(false);
         datePickerDialog.show();
+    }
+
+    public static List<LearningStep> getLearningStepList() {
+        return learningStepList;
     }
 
     private void discreteSlider() {

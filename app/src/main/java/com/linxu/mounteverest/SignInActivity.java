@@ -41,12 +41,19 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mUserDatabaseReference;
 
-    public static List<User> getUserList() {
-        return userList;
+    public static FirebaseDatabase getmFirebaseDatabase() {
+        return mFirebaseDatabase;
     }
+
+    private static FirebaseDatabase mFirebaseDatabase;
+
+    public static DatabaseReference getmUserDatabaseReference() {
+        return mUserDatabaseReference;
+    }
+
+    private static DatabaseReference mUserDatabaseReference;
+
 
     //sqlite
     //private DateBaseHandler db;
@@ -130,6 +137,11 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
         }
     }
+
+    public static List<User> getUserList() {
+        return userList;
+    }
+
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle: " + acct.getId());
