@@ -45,15 +45,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
 
-
     private String mUsername;
     private String mPhotoUrl;
     private GoogleApiClient googleApiClient;
 
     public static final String ANONYMOUS = "anonymous";
     private float currentPos = 0;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +80,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .addApi(Auth.GOOGLE_SIGN_IN_API)
                 //.addApi(AppInvite.API)
                 .build();
+        if(AddProject.addProjectDoneBoolean == false){
+            openAddProjectDialog();
+            AddProject.addProjectDoneBoolean = true;
+        }
 
         progressView = (ProgressView)findViewById(R.id.progress_view);
 
@@ -128,6 +129,21 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         circularImageView.setShadowRadius(15);
         circularImageView.setShadowColor(Color.RED);
 
+    }
+
+    private void openAddProjectDialog() {
+        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        alertDialog.setTitle("hi");
+        alertDialog.setMessage("set your learningsteps!");
+
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(MainActivity.this, AddProject.class);
+                startActivity(intent);
+            }
+        });
+        alertDialog.show();
     }
 
     private void openDialog() {

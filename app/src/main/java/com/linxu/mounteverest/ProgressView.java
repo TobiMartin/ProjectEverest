@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by lin xu on 21.01.2017.
@@ -62,10 +63,20 @@ public class ProgressView extends View{
         progressBar = new Rect(x, y, x + sideWidth, y + sideHeight);
         ladderMarkers = new ArrayList<>();
 
-        float diff = (progressBar.bottom - progressBar.top)/11; //11 = i + 1;
-        for(int i = 0; i < 10; i++){
-            Rect rect = new Rect(progressBar.left, (int)(progressBar.bottom - diff * (i + 1)  - 10 ), progressBar.right, (int)(progressBar.bottom - diff * (i + 1) + 10));
-            ladderMarkers.add(rect);
+        if(AddProject.addProjectDoneBoolean == false){
+            float diff = (progressBar.bottom - progressBar.top)/11; //11 = i + 1;
+            for(int i = 0; i < 10; i++){
+                Rect rect = new Rect(progressBar.left, (int)(progressBar.bottom - diff * (i + 1)  - 10 ), progressBar.right, (int)(progressBar.bottom - diff * (i + 1) + 10));
+                ladderMarkers.add(rect);
+            }
+
+        }else{
+            List<LearningStep> learningStepList = CustomSliderView.getLearningStepList();
+            float diff = (progressBar.bottom - progressBar.top)/(learningStepList.size() +1); //11 = i + 1;
+            for(int i = 0; i < learningStepList.size(); i++){
+                Rect rect = new Rect(progressBar.left, (int)(progressBar.bottom - diff * (i + 1)  - 10 ), progressBar.right, (int)(progressBar.bottom - diff * (i + 1) + 10));
+                ladderMarkers.add(rect);
+            }
         }
         
         progressBarPaint = new Paint();

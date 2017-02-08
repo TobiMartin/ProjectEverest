@@ -34,7 +34,7 @@ public class AddProject extends AppCompatActivity {
     private boolean endDateSet = false;
 
     private Button addProjectDone;
-
+    public static Boolean addProjectDoneBoolean = false;
 
 
     Bundle extras;
@@ -53,9 +53,9 @@ public class AddProject extends AppCompatActivity {
         addProjectDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(AddProject.this, MainActivity.class);
                 startActivity(intent);
+                addProjectDoneBoolean = true;
             }
         });
     }

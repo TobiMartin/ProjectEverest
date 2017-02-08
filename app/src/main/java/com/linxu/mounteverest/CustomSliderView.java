@@ -81,6 +81,7 @@ public class CustomSliderView extends View {
 
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mLearningStepsDatabaseReference;
+    private DatabaseReference mUserDatabaseRefercen;
 
     private LearningStepAdapter mLearningStepAdapter;
 
@@ -134,8 +135,9 @@ public class CustomSliderView extends View {
 
         //firebase database initialize
         mFirebaseDatabase = SignInActivity.getmFirebaseDatabase();
-        mLearningStepsDatabaseReference = mFirebaseDatabase.getReference().child("User").child(SignInActivity.getCurrentUser().getId()).child("learning steps");
-
+        //mLearningStepsDatabaseReference = mFirebaseDatabase.getReference().child("User").child(SignInActivity.getCurrentUser().getId()).child("learning steps");
+        //mUserDatabaseRefercen = SignInActivity.getmUserDatabaseReference();
+        //mLearningStepsDatabaseReference = mUserDatabaseRefercen.child("User").child(SignInActivity.getCurrentUser().getId()).child("learning steps");
         learningStepList = new ArrayList<>();
     }
 
@@ -232,7 +234,7 @@ public class CustomSliderView extends View {
             @Override
             public void onClick(View view) {
                 LearningStep learningStep = new LearningStep(date, String.valueOf(title.getText()), String.valueOf(note.getText()));
-                mLearningStepsDatabaseReference.child("learning_step").push().setValue(learningStep);
+                //mLearningStepsDatabaseReference.child("learning_step").push().setValue(learningStep);
                 learningStepList.add(learningStep);
 
                 Collections.sort(learningStepList, new Comparator<LearningStep>() {
