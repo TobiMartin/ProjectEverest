@@ -16,12 +16,15 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by lin xu on 26.01.2017.
+ * Created by Tobias Martin on 08.02.2017.
  */
 
-public class ProfilesList extends ListFragment{
+public class ProjectsList extends ListFragment{
 
-    private static final String TAG = "ProfilesList";
+    //TODO
+    // Projekte in der Liste anzeigen
+
+    private static final String TAG = "ProjectsList";
     private List<User> userList;
 
     ArrayList<String> userNames = new ArrayList<>();
@@ -79,8 +82,10 @@ public class ProfilesList extends ListFragment{
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
 
-        Intent intent = new Intent(ProfilesList.this.getActivity(), ProfileDetail.class);
-        intent.putExtra("User", userList.get(position));
-        startActivity(intent);
+//        Intent intent = new Intent(ProjectsList.this.getActivity(), ProfileDetail.class);
+//        intent.putExtra("User", userList.get(position));
+//        startActivity(intent);
+        // TODO
+        // Projecte im Detail anzeigen
     }
 }

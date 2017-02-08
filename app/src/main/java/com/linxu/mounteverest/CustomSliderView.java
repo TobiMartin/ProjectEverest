@@ -136,7 +136,7 @@ public class CustomSliderView extends View {
 
         //firebase database initialize
         mFirebaseDatabase = SignInActivity.getmFirebaseDatabase();
-        mLearningStepsDatabaseReference = mFirebaseDatabase.getReference().child("User").child(SignInActivity.getCurrentUser().getId()).child("learning steps");
+        mLearningStepsDatabaseReference = mFirebaseDatabase.getReference().child("User").child(SignInActivity.currentUser.getId()).child("learning steps");
 
         learningStepList = new ArrayList<>();
     }
@@ -398,4 +398,6 @@ public class CustomSliderView extends View {
     public void register(AddProject project) {
         this.addProject = project;
     }
+
+
 }

@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
@@ -15,28 +16,31 @@ import java.io.InputStream;
 /**
  * Created by lin xu on 03.12.2016.
  */
-public class ProfileDetail extends AppCompatActivity{
-    private static final String TAG = "ProfileDetail";
-    private User user;
+public class ProfileDetail extends FragmentActivity{
 
-    ImageView profilePicture;
+    private static final String TAG = "ProfileDetail";
+
+
+
     TextView profileName;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_detail);
 
-        //Bundle extras = getIntent().getExtras();
-        //if (extras != null)
-        //{
-        //    user = (User) extras.getSerializable("User");
-        //    Log.d(TAG, "DETAIL: " + user.getUsername());
-        //}
+        User user;
+        user = SignInActivity.currentUser;
 
-        user = SignInActivity.getCurrentUser();
+        Bundle extras = getIntent().getExtras();
+        if (extras != null)
+        {
+            user = (User) extras.getSerializable("User");
+        }
 
-        profileName= (TextView) findViewById(R.id.profile_name);
+        profileName = (TextView) findViewById(R.id.profile_name);
         profileName.setText(user.getUsername());
 
         new DownloadImageTask((ImageView) findViewById(R.id.profile_picture)).execute(user.getPhoto());
