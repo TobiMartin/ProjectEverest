@@ -1,14 +1,20 @@
 package com.linxu.mounteverest;
 
 import android.content.Context;
+import android.drm.DrmStore;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import java.util.ArrayList;
@@ -21,7 +27,11 @@ public class ProgressView extends View{
 
     private Rect progressBar;
 
-    private ArrayList<Rect> ladderMarkers;
+    public static ArrayList<Rect> getLadderMarkers() {
+        return ladderMarkers;
+    }
+
+    private static ArrayList<Rect> ladderMarkers;
     private Paint progressBarPaint;
     private Paint ladderPaint;
     private DateBaseHandler db;
@@ -54,9 +64,10 @@ public class ProgressView extends View{
 
         float diff = (progressBar.bottom - progressBar.top)/11; //11 = i + 1;
         for(int i = 0; i < 10; i++){
-            ladderMarkers.add(new Rect(progressBar.left, (int)(progressBar.bottom - diff * (i + 1)  - 10 ), progressBar.right, (int)(progressBar.bottom - diff * (i + 1) + 10)));
+            Rect rect = new Rect(progressBar.left, (int)(progressBar.bottom - diff * (i + 1)  - 10 ), progressBar.right, (int)(progressBar.bottom - diff * (i + 1) + 10));
+            ladderMarkers.add(rect);
         }
-
+        
         progressBarPaint = new Paint();
         progressBarPaint.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
 
@@ -65,6 +76,7 @@ public class ProgressView extends View{
 
         db = new DateBaseHandler(getContext());
     }
+
 
     @Override
     protected void onDraw(Canvas canvas) {

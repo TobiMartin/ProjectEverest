@@ -115,8 +115,6 @@ public class CustomSliderView extends View {
 
         eventMarkers = new ArrayList<>();
 
-        //list = new ArrayList<>();
-
         // create the Paint and set its color
         sliderPaint = new Paint();
         sliderPaint.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
@@ -132,7 +130,7 @@ public class CustomSliderView extends View {
 
         startDateRegion = new Rect(slider.left, slider.bottom + 10, slider.right, slider.bottom + 100);
         endDateRegion = new Rect(slider.left, slider.top - 100, slider.right, slider.top - 10);
-        //db = new DateBaseHandler(getContext());
+
 
         //firebase database initialize
         mFirebaseDatabase = SignInActivity.getmFirebaseDatabase();

@@ -1,10 +1,14 @@
 package com.linxu.mounteverest;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.view.CollapsibleActionView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,6 +16,9 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 
 import com.google.android.gms.auth.api.Auth;
@@ -23,35 +30,30 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
-    //private ProgressBar progressBar;
-    //LinearLayout ll;
-    //Bundle extras;
+
     private ProgressView progressView;
     private pl.droidsonroids.gif.GifTextView climber;
 
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
-    //private FirebaseDatabase mFirebaseDatabase;
-    //private DatabaseReference mLearningProjectDatabaseReference;
-    //private FirebaseRecyclerAdapter<FriendlyMessage, MessageViewHolder> mFirebaseAdapter;
-    //private FirebaseRemoteConfig mFirebaseRemoteConfig;
-    //private FirebaseAnalytics mFirebaseAnalytics;
+
 
     private String mUsername;
     private String mPhotoUrl;
     private GoogleApiClient googleApiClient;
 
     public static final String ANONYMOUS = "anonymous";
+    private float currentPos = 0;
 
-    //private FirebaseDateBaseHandler firebaseDateBaseHandler;
-    //private User currentUser;
-    //private List<User> userList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +63,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         // Set default username is anonymous.
         mUsername = ANONYMOUS;
 
-        //firebaseDateBaseHandler = new FirebaseDateBaseHandler();
-        //firebaseDateBaseHandler.Init();
-
-        //mFirebaseDatabase = FirebaseDatabase.getInstance();
-        //mLearningProjectDatabaseReference = mFirebaseDatabase.getReference().child("learning_project");
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
@@ -96,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             }
         });
 
-       // snow = (pl.droidsonroids.gif.GifTextView)findViewById(R.id.snow);
         climber = (pl.droidsonroids.gif.GifTextView)findViewById(R.id.climber_gif_text_view);
         int mm = 4;
         Drawable d = getResources().getDrawable(R.drawable.climber_transparent);
@@ -108,8 +104,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         climber.setLayoutParams(parm);
 
         climber.setX(380f);
+        climber.setY(1300f);
+        climber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDialog();
+            }
+        });
 
-        climber.setY(1000f);
+
 
         CircularImageView circularImageView = (CircularImageView)findViewById(R.id.circle_image_view);
         circularImageView.setX(140f);
@@ -125,58 +128,48 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         circularImageView.setShadowRadius(15);
         circularImageView.setShadowColor(Color.RED);
 
-        //progressBar = (ProgressBar)findViewById(R.id.progressBar1);
-        //extras = getIntent().getExtras();
-        //validateEmptyProjectData();
+    }
 
+    private void openDialog() {
+        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        alertDialog.setTitle("hi");
+        alertDialog.setMessage("this is my app");
+
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                moveToNextLadder(climber);
+            }
+        });
+        alertDialog.show();
     }
 
     private void zoomViewFromThumb() {
         //todo: do zoom in animation
     }
 
+    private void moveToNextLadder(View view) {
+        Animation animation = new TranslateAnimation(0, 0, currentPos, getNextLadder(climber.getY()));
+        currentPos += getNextLadder(climber.getY());
+        animation.setDuration(200);
+        animation.setFillAfter(true);
+        view.startAnimation(animation);
+    }
 
+    private float getNextLadder(float y) {
+        List difference = new ArrayList();
+        for(int i =0; i< ProgressView.getLadderMarkers().size(); i++){
+            if(y - ProgressView.getLadderMarkers().get(i).top > 0){
+                difference.add(y - ProgressView.getLadderMarkers().get(i).top);
+            }
+        }
+        float differencePosition = -(float)Collections.min(difference);
+        Log.d("differencePosition:  ","" + differencePosition);
+        Log.d("y: ", "" + y);
+        climber.setY(y + differencePosition);
+        return differencePosition;
+    }
 
-    //private void validateEmptyProjectData() {
-    //    if(extras == null){
-    //        Intent intent = new Intent(MainActivity.this, AddProject.class);
-    //        startActivity(intent);
-    //    }else{
-    //        bindButton();
-    //    }
-    //}
-//
-    //private int[] extractLearningStepPercentage() {
-    //    int[] learningStepPercentage;
-    //    learningStepPercentage = new int[extras.size()];
-    //    for(int i = 0; i < extras.size(); i++){
-    //        learningStepPercentage[i] = Integer.parseInt(extras.getString("learningStepPercent" + (i+1)));
-    //    }
-    //    Log.d("learning Percentage: " , " " + Arrays.toString(learningStepPercentage));
-    //    return learningStepPercentage;
-    //}
-
-    //private void bindButton() {
-    //    ll = (LinearLayout)findViewById(R.id.button_layoout);
-    //    for(int i = 0; i < extractLearningStepPercentage().length; i++){
-    //        final Button button = new Button(this);
-    //        button.setId(i+1);
-    //        button.setText("learningStepPercentage" + (i+1));
-    //        ll.addView(button);
-    //        final int finalI = i;
-    //        button.setOnClickListener(new View.OnClickListener() {
-    //            int sum;
-    //            @Override
-    //            public void onClick(View view) {
-    //                for(int i = 0; i<button.getId(); i++){
-    //                    sum += extractLearningStepPercentage()[i];
-    //                }
-    //                progressBar.setProgress(sum);
-    //                Toast.makeText(MainActivity.this, "sum: "+ sum, Toast.LENGTH_SHORT).show();
-    //            }
-    //        });
-    //    }
-    //}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
