@@ -56,12 +56,12 @@ public class ProjectsList extends ListFragment{
         // Each row in the list stores country name, currency and flag
         List<HashMap<String,String>> aList = new ArrayList<>();
 
-        for(int i = 0; i < userID.size(); i++){
+        for(int i = 0; i < 1/*userID.size()*/; i++){
             HashMap<String, String> hm = new HashMap<>();
 
             Uri uri =  Uri.parse(userPhotos.get(i));
 
-            hm.put("txt", userNames.get(i));
+            hm.put("txt", "Test Project"/*userNames.get(i)*/);
 //            hm.put("flag", String.valueOf(uri));
 
             aList.add(hm);
@@ -87,5 +87,8 @@ public class ProjectsList extends ListFragment{
 //        startActivity(intent);
         // TODO
         // Projecte im Detail anzeigen
+        // Welche Steps aus learningStepsPerUser?
+        // Eigene Steps: Position von currentUser in userListe = Position der Steps in learningStepsPerUser
+        // Steps aus der Liste: Position des geklickten User in der Liste = Position der Steps in learningStepsPerUser
     }
 }

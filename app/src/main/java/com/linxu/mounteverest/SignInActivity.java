@@ -64,6 +64,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
     public static List<User> userList;
     public static User currentUser;
+    public static List<List<LearningStep>> learningStepsPerUser;
 
 
 
@@ -81,6 +82,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
 
         userList = new ArrayList<User>();
+        learningStepsPerUser = new ArrayList<List<LearningStep>>();
 
 
 
@@ -271,8 +273,30 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
                     User user = new User((String)userObj.get("id"), (String)userObj.get("username"),
                             (String)userObj.get("email"), (String)userObj.get("photo"));
-//                    Log.d("IDS3", "" + user.getUsername());
                     userList.add(user);
+
+
+
+                    JSONObject learningStep = new JSONObject();
+                    JSONObject learningSteps = new JSONObject();
+                    if (userObj.has("learning steps")) {
+                        learningStep = userObj.getJSONObject("learning steps");
+                    }
+                    if (learningStep.has("learning_step")) {
+                        learningSteps = learningStep.getJSONObject("learning_step");
+
+                        List<LearningStep> steps = new ArrayList<LearningStep>();
+                        for (int j = 0; j < learningSteps.names().length(); j++) {
+                            JSONObject singleStep = learningSteps.getJSONObject((String) learningSteps.names().get(j));
+                            LearningStep step = new LearningStep((String)singleStep.get("date"), (String)singleStep.get("title"),
+                                    (String)singleStep.get("note"));
+                            steps.add(step);
+                        }
+                        Log.d("STEPS! ARRAY", "" + steps.toString());
+                        learningStepsPerUser.add(steps);
+                        Log.d("STEPS! ARRAY", "" + learningStepsPerUser.toString());
+                    }
+
 
                     //TODO
                     // currentUser abfragen
