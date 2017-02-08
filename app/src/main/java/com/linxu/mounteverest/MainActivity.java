@@ -210,6 +210,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 mFirebaseAuth.signOut();
                 Auth.GoogleSignInApi.signOut(googleApiClient);
                 mUsername = ANONYMOUS;
+                AddProject.addProjectDoneBoolean = false;
                 startActivity(new Intent(this, SignInActivity.class));
                 return true;
             default:

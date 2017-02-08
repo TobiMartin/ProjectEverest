@@ -16,12 +16,15 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by lin xu on 26.01.2017.
+ * Created by Tobias Martin on 08.02.2017.
  */
 
-public class ProfilesList extends ListFragment{
+public class ProjectsList extends ListFragment{
 
-    private static final String TAG = "ProfilesList";
+    //TODO
+    // Projekte in der Liste anzeigen
+
+    private static final String TAG = "ProjectsList";
     private List<User> userList;
 
     ArrayList<String> userNames = new ArrayList<>();
@@ -53,12 +56,16 @@ public class ProfilesList extends ListFragment{
         // Each row in the list stores country name, currency and flag
         List<HashMap<String,String>> aList = new ArrayList<>();
 
-        for(int i = 0; i < userID.size(); i++){
+        for(int i = 0; i < 2/*userID.size()*/; i++){
             HashMap<String, String> hm = new HashMap<>();
 
-            Uri uri =  Uri.parse(userPhotos.get(i));
+//            Uri uri =  Uri.parse(userPhotos.get(i));
 
-            hm.put("txt", userNames.get(i));
+            hm.put("txt", "Test Project"/*userNames.get(i)*/);
+            if (i == 1) {
+                hm.put("txt", "Test"/*userNames.get(i)*/);
+            }
+
 //            hm.put("flag", String.valueOf(uri));
 
             aList.add(hm);
@@ -79,8 +86,13 @@ public class ProfilesList extends ListFragment{
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
 
-        Intent intent = new Intent(ProfilesList.this.getActivity(), ProfileDetail.class);
-        intent.putExtra("User", userList.get(position));
-        startActivity(intent);
+//        Intent intent = new Intent(ProjectsList.this.getActivity(), ProfileDetail.class);
+//        intent.putExtra("User", userList.get(position));
+//        startActivity(intent);
+        // TODO
+        // Projecte im Detail anzeigen
+        // Welche Steps aus learningStepsPerUser?
+        // Eigene Steps: Position von currentUser in userListe = Position der Steps in learningStepsPerUser
+        // Steps aus der Liste: Position des geklickten User in der Liste = Position der Steps in learningStepsPerUser
     }
 }
