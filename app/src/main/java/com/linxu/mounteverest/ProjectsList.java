@@ -56,12 +56,16 @@ public class ProjectsList extends ListFragment{
         // Each row in the list stores country name, currency and flag
         List<HashMap<String,String>> aList = new ArrayList<>();
 
-        for(int i = 0; i < 1/*userID.size()*/; i++){
+        for(int i = 0; i < 2/*userID.size()*/; i++){
             HashMap<String, String> hm = new HashMap<>();
 
-            Uri uri =  Uri.parse(userPhotos.get(i));
+//            Uri uri =  Uri.parse(userPhotos.get(i));
 
             hm.put("txt", "Test Project"/*userNames.get(i)*/);
+            if (i == 1) {
+                hm.put("txt", "Test"/*userNames.get(i)*/);
+            }
+
 //            hm.put("flag", String.valueOf(uri));
 
             aList.add(hm);

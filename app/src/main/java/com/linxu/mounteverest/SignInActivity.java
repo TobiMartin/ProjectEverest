@@ -282,6 +282,9 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                     if (userObj.has("learning steps")) {
                         learningStep = userObj.getJSONObject("learning steps");
                     }
+                    else {
+                        learningStepsPerUser.add(null);
+                    }
                     if (learningStep.has("learning_step")) {
                         learningSteps = learningStep.getJSONObject("learning_step");
 
@@ -295,6 +298,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                         Log.d("STEPS! ARRAY", "" + steps.toString());
                         learningStepsPerUser.add(steps);
                         Log.d("STEPS! ARRAY", "" + learningStepsPerUser.toString());
+                        Log.d("STEPS! ARRAY", "" + learningStepsPerUser.size());
                     }
 
 
