@@ -89,6 +89,28 @@ public class ProjectsList extends ListFragment{
 //        Intent intent = new Intent(ProjectsList.this.getActivity(), ProfileDetail.class);
 //        intent.putExtra("User", userList.get(position));
 //        startActivity(intent);
+        if (position == 0) {
+
+            int pos = 0;
+            for (int i = 0; i < SignInActivity.userList.size(); i++) {
+                if (SignInActivity.currentUser.getId().equals(userList.get(i).getId())) {
+                    pos = i;
+                }
+            }
+
+            if (ProfileDetail.profilDetailUser != null) {
+                for (int j = 0; j < SignInActivity.userList.size(); j++) {
+                    if (ProfileDetail.profilDetailUser.getId().equals(SignInActivity.userList.get(j))) {
+                        pos = j;
+                    }
+                }
+            }else {
+                Log.d(TAG, "profiledetailuser ist null");
+            }
+            ProfileDetail.profilDetailUser = null;
+
+            Log.d(TAG, "" + SignInActivity.learningStepsPerUser.get(pos));
+        }
         // TODO
         // Projecte im Detail anzeigen
         // Welche Steps aus learningStepsPerUser?

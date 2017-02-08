@@ -21,6 +21,8 @@ public class ProfileDetail extends FragmentActivity{
     private static final String TAG = "ProfileDetail";
 
 
+    public static User profilDetailUser;
+
 
     TextView profileName;
 
@@ -33,11 +35,13 @@ public class ProfileDetail extends FragmentActivity{
 
         User user;
         user = SignInActivity.currentUser;
+        profilDetailUser = null;
 
         Bundle extras = getIntent().getExtras();
         if (extras != null)
         {
             user = (User) extras.getSerializable("User");
+            profilDetailUser = user;
         }
 
         profileName = (TextView) findViewById(R.id.profile_name);
