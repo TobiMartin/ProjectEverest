@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private void moveToNextLadder(View view) {
         Animation animation = new TranslateAnimation(0, 0, currentPos, getNextLadder(climber.getY()));
         currentPos += getNextLadder(climber.getY());
-        animation.setDuration(200);
+        animation.setDuration(800);
         animation.setFillAfter(true);
         view.startAnimation(animation);
     }
