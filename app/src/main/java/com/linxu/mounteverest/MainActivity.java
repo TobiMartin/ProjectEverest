@@ -1,5 +1,6 @@
 package com.linxu.mounteverest;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -32,7 +33,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     //LinearLayout ll;
     //Bundle extras;
     private ProgressView progressView;
-    private pl.droidsonroids.gif.GifTextView climber;
+    private Main_Activity_Layout mainActivityLayout;
+    private Context context;
+    //private pl.droidsonroids.gif.GifTextView climber;  wieder einbauen
 
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
@@ -56,7 +59,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        mainActivityLayout = new Main_Activity_Layout(this);
+        //progressView = new ProgressView(this);
+        setContentView(mainActivityLayout);  // wieder Einbauen anpassen
         // Initialize Firebase Auth
         // Set default username is anonymous.
         mUsername = ANONYMOUS;
@@ -87,17 +92,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 //.addApi(AppInvite.API)
                 .build();
 
-        progressView = (ProgressView)findViewById(R.id.progress_view);
+       /* progressView = (ProgressView)findViewById(R.id.progress_view);
 
         progressView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 zoomViewFromThumb();
             }
-        });
+        }); wieder einbauen mit xml datei */
 
        // snow = (pl.droidsonroids.gif.GifTextView)findViewById(R.id.snow);
-        climber = (pl.droidsonroids.gif.GifTextView)findViewById(R.id.climber_gif_text_view);
+       /* climber = (pl.droidsonroids.gif.GifTextView)findViewById(R.id.climber_gif_text_view);
         int mm = 4;
         Drawable d = getResources().getDrawable(R.drawable.climber_transparent);
         int h = d.getIntrinsicHeight();
@@ -123,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         circularImageView.addShadow();
         // or with custom param
         circularImageView.setShadowRadius(15);
-        circularImageView.setShadowColor(Color.RED);
+        circularImageView.setShadowColor(Color.RED);  wieder einbauen in Layout */
 
         //progressBar = (ProgressBar)findViewById(R.id.progressBar1);
         //extras = getIntent().getExtras();

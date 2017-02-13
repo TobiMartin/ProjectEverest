@@ -100,7 +100,7 @@ public class CustomSliderView extends View {
         int x = 100;
         int y = 150;
         int sideWidth = 200;
-        int sideHeight = 1000;
+        int sideHeight = 600;
 
         //delete Database
 
