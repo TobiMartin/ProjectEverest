@@ -60,7 +60,7 @@ public class Main_Activity_Layout extends SurfaceView implements SurfaceHolder.C
     int x = 400;
     int y = 150;
     int sideWidth = 200;
-    int sideHeight = 800;
+    int sideHeight = 1300;
 
     int x1, y1;
 
