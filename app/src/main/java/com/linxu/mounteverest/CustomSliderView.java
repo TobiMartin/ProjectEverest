@@ -50,6 +50,12 @@ public class CustomSliderView extends View {
     private final int eventMarkerHeight = 20;
     private Paint eventPaint;
 
+    private float referenceHeight = 1600.0f;
+    private float referenceWidth = 800.0f;
+
+    private int currentWidth = 800;
+    private int currentHeight = 1300;
+
     private Rect[] discreteMarkers;
     private Paint discreteMarkerPaint;
 
@@ -176,7 +182,7 @@ public class CustomSliderView extends View {
                         }
                     }
 
-                    if (draggedMarker == null) {
+                    if (draggedMarker == null && datesSet()) {
                         eventMarkers.add(new Rect(slider.left, y - eventMarkerHeight / 2,
                                 slider.right, y + eventMarkerHeight / 2));
                         draggedMarker = eventMarkers.get(eventMarkers.size() - 1);
@@ -193,7 +199,7 @@ public class CustomSliderView extends View {
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                if (draggedMarker != null) {
+                if (draggedMarker != null && discreteMarkers != null) {
                     for(int i = 0; i < discreteMarkers.length; i++){
                         if(discreteMarkers[i] != null && discreteMarkers[i].contains(x,y) ){
                             draggedMarker.top = discreteMarkers[i].top;
@@ -210,6 +216,10 @@ public class CustomSliderView extends View {
 
         // tell the View that we handled the event
         return true;
+    }
+
+    private boolean datesSet() {
+        return startDateInMillis != null && endDateInMillis != null;
     }
 
     private void openDialog() {
@@ -380,10 +390,19 @@ public class CustomSliderView extends View {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
-        canvas.drawRect(slider, sliderPaint);
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        Log.d("size changed: ", "w: " + w + ", h: " + h );
+        currentWidth = w;
+        currentHeight = h;
+        super.onSizeChanged(w, h, oldw, oldh);
+    }
 
-        Log.d("isStartDateSet", ""+addProject.isStartDateSet());
+    @Override
+    protected void onDraw(Canvas canvas) {
+        double factorX = currentWidth / referenceWidth;
+        double factorY = currentHeight / referenceHeight;
+
+        canvas.drawRect(scaleRect(slider, factorX, factorY), sliderPaint);
 
         if(slideDiscreteable) {
             for (Rect discreteMarker : discreteMarkers) {
@@ -395,8 +414,15 @@ public class CustomSliderView extends View {
             canvas.drawRect(eventMarker, eventPaint);
         }
 
-        canvas.drawRect(startDateRegion, dateRegionPaint);
-        canvas.drawRect(endDateRegion, dateRegionPaint);
+        canvas.drawRect(scaleRect(startDateRegion, factorX, factorY), dateRegionPaint);
+        canvas.drawRect(scaleRect(endDateRegion, factorX, factorY), dateRegionPaint);
+    }
+
+    private Rect scaleRect(Rect original, double factorX, double factorY) {
+        return new Rect((int) Math.rint(factorX*original.left),
+                (int) Math.rint(factorY*original.top),
+                (int) Math.rint(factorX*original.right),
+                (int) Math.rint(factorY*original.bottom));
     }
 
     public void register(AddProject project) {

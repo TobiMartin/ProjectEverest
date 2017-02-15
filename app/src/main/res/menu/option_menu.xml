@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/add_project"
-        android:title="add project"></item>
+        android:title="Add project"></item>
     <item
         android:id="@+id/edit_project"
-        android:title="edit project"></item>
+        android:title="Edit project"></item>
     <item
         android:id="@+id/profile"
-        android:title="profile"></item>
+        android:title="Profile"></item>
     <item
         android:id="@+id/search"
-        android:title="search"></item>
+        android:title="Search"></item>
     <item
         android:id="@+id/sign_out_menu"
-        android:title="sign out"></item>
+        android:title="Sign out"></item>
 </menu>
