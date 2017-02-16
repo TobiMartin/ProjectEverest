@@ -17,7 +17,9 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
@@ -51,7 +53,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private GoogleApiClient googleApiClient;
 
     public static final String ANONYMOUS = "anonymous";
-    private float currentPos = 0;
+    private float currentPos;
+    private int currentStep = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,17 +110,19 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         Drawable d = getResources().getDrawable(R.drawable.climber_transparent);
         int h = d.getIntrinsicHeight();
         int w = d.getIntrinsicWidth();
-        Log.d("width","" + w);
 
         RelativeLayout.LayoutParams parm = new RelativeLayout.LayoutParams(w/mm, h/mm);
         climber.setLayoutParams(parm);
 
         climber.setX(380f);
-        climber.setY(1300f);
+        climber.setY(progressView.rungY(0));
+
         climber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openDialog();
+                if (currentStep < progressView.getNLearningSteps()) {
+                    openDialog();
+                }
             }
         });
 
@@ -141,10 +146,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     private void openAddProjectDialog() {
         AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-        alertDialog.setTitle("hi");
-        alertDialog.setMessage("set your learningsteps!");
+        alertDialog.setTitle("Hi");
+        alertDialog.setMessage("Set your learning steps!");
 
-        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "ok", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Intent intent = new Intent(MainActivity.this, AddProject.class);
@@ -155,14 +160,44 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     private void openDialog() {
-        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-        alertDialog.setTitle("hi");
-        alertDialog.setMessage("this is my app");
+        final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        alertDialog.setTitle("Next Step");
+        LearningStep learningStep = CustomSliderView.getLearningStepList().get(
+                progressView.getNLearningSteps() - 1 - currentStep);
 
-        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "ok", new DialogInterface.OnClickListener() {
+        alertDialog.setMessage("Have you finished your current step for " +
+                learningStep.getDate() + "? Title: " +
+                learningStep.getTitle() + "? Note: " + learningStep.getNote());
+
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                moveToNextLadder(climber);
+                if (currentStep == progressView.getNLearningSteps() - 1) {
+                    showSuccessAlert();
+                }
+                if (currentStep <= progressView.getNLearningSteps() - 1) {
+                    moveToNextLadder(climber);
+                }
+            }
+        });
+        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
+    }
+
+    private void showSuccessAlert() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        alertDialog.setTitle("Congratulations!");
+        alertDialog.setMessage("You have completed all learning steps!");
+
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                alertDialog.dismiss();
             }
         });
         alertDialog.show();
@@ -173,25 +208,35 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     private void moveToNextLadder(View view) {
-        Animation animation = new TranslateAnimation(0, 0, currentPos, getNextLadder(climber.getY()));
-        currentPos += getNextLadder(climber.getY());
-        animation.setDuration(800);
-        animation.setFillAfter(true);
-        view.startAnimation(animation);
-    }
+        currentStep += 1;
+        float previousPos = climber.getY();
+        currentPos = progressView.rungY(currentStep);
 
-    private float getNextLadder(float y) {
-        List difference = new ArrayList();
-        for(int i =0; i< ProgressView.getLadderMarkers().size(); i++){
-            if(y - ProgressView.getLadderMarkers().get(i).top > 0){
-                difference.add(y - ProgressView.getLadderMarkers().get(i).top);
-            }
+        // On last step, move outside the screen
+        if (currentStep == progressView.getNLearningSteps()) {
+            currentPos = -climber.getHeight();
         }
-        float differencePosition = -(float)Collections.min(difference);
-        Log.d("differencePosition:  ","" + differencePosition);
-        Log.d("y: ", "" + y);
-        climber.setY(y + differencePosition);
-        return differencePosition;
+
+        climber.setY(currentPos);
+        Animation moveAnimation = new TranslateAnimation(0, 0,
+               previousPos - currentPos, 0);
+        moveAnimation.setDuration(1000);
+
+        //moveAnimation.setFillAfter(true);
+        if (currentStep == progressView.getNLearningSteps()) {
+            Animation alphaAnimation = new AlphaAnimation(1.0f, 0.0f);
+            alphaAnimation.setDuration(1000);
+            //alphaAnimation.setFillAfter(true);
+
+            AnimationSet comp = new AnimationSet(true);
+            // comp.setFillEnabled(true);
+            comp.setFillAfter(true);
+            comp.addAnimation(alphaAnimation);
+            comp.addAnimation(moveAnimation);
+            view.startAnimation(comp);
+        } else {
+            view.startAnimation(moveAnimation);
+        }
     }
 
 

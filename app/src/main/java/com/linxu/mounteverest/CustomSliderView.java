@@ -26,8 +26,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -248,12 +246,12 @@ public class CustomSliderView extends View {
 
         final Dialog dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.set_learning_steps_dialog);
-        dialog.setTitle("Set Learning Steps");
+        dialog.setTitle("Create Learning Step");
 
         final String date = dayToDate(eventMarker.getDay());
 
         TextView text = (TextView)dialog.findViewById(R.id.set_learning_step_text);
-        text.setText("Do you want to set learning step on " + date +" ?");
+        text.setText("Do you want to create a learning step on " + date +" ?");
 
         final EditText note = (EditText)dialog.findViewById(R.id.learning_step_note);
 
@@ -269,12 +267,6 @@ public class CustomSliderView extends View {
                 //mLearningStepsDatabaseReference.child("learning_step").push().setValue(learningStep);
                 learningStepList.add(learningStep);
 
-                Collections.sort(learningStepList, new Comparator<LearningStep>() {
-                    @Override
-                    public int compare(LearningStep l1, LearningStep l2) {
-                        return l2.getDate().compareToIgnoreCase(l1.getDate());
-                    }
-                });
                 addProject.upDateLearningSteps(learningStepList);
                 eventMarker.setLearningStep(learningStep);
                 dialog.dismiss();

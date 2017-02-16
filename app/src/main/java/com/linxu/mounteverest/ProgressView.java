@@ -36,6 +36,7 @@ public class ProgressView extends View{
     private Paint progressBarPaint;
     private Paint ladderPaint;
     private DateBaseHandler db;
+    private int nLearningSteps;
 
     public ProgressView(Context context) {
         super(context);
@@ -63,7 +64,7 @@ public class ProgressView extends View{
         progressBar = new Rect(x, y, x + sideWidth, y + sideHeight);
         ladderMarkers = new ArrayList<>();
 
-        if(AddProject.addProjectDoneBoolean == false){
+        if(!AddProject.addProjectDoneBoolean){
             float diff = (progressBar.bottom - progressBar.top)/11; //11 = i + 1;
             for(int i = 0; i < 10; i++){
                 Rect rect = new Rect(progressBar.left, (int)(progressBar.bottom - diff * (i + 1)  - 10 ), progressBar.right, (int)(progressBar.bottom - diff * (i + 1) + 10));
@@ -72,7 +73,8 @@ public class ProgressView extends View{
 
         }else{
             List<LearningStep> learningStepList = CustomSliderView.getLearningStepList();
-            float diff = (progressBar.bottom - progressBar.top)/(learningStepList.size() +1); //11 = i + 1;
+            nLearningSteps = learningStepList.size();
+            float diff = (progressBar.bottom - progressBar.top)/(learningStepList.size()); //11 = i + 1;
             for(int i = 0; i < learningStepList.size(); i++){
                 Rect rect = new Rect(progressBar.left, (int)(progressBar.bottom - diff * (i + 1)  - 10 ), progressBar.right, (int)(progressBar.bottom - diff * (i + 1) + 10));
                 ladderMarkers.add(rect);
@@ -96,6 +98,15 @@ public class ProgressView extends View{
         for(Rect ladderMarker : ladderMarkers){
             canvas.drawRect(ladderMarker, ladderPaint);
         }
+    }
+
+    public float rungY(int step) {
+        float rungSpacing = 1.0f*(progressBar.bottom - progressBar.top) / ladderMarkers.size();
+        return progressBar.bottom - (step + 1) * rungSpacing;
+    }
+
+    public int getNLearningSteps() {
+        return nLearningSteps;
     }
 
     public Rect getProgressBar(){

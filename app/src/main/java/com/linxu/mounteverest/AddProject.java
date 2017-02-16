@@ -16,6 +16,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -64,6 +66,12 @@ public class AddProject extends AppCompatActivity {
     }
 
     public void upDateLearningSteps(List learningSteps){
+        Collections.sort(learningSteps, new Comparator<LearningStep>() {
+            @Override
+            public int compare(LearningStep l1, LearningStep l2) {
+                return l2.getDate().compareToIgnoreCase(l1.getDate());
+            }
+        });
         learningStepAdapter = new LearningStepAdapter(AddProject.this, learningSteps);
         listView.setAdapter(learningStepAdapter);
     }

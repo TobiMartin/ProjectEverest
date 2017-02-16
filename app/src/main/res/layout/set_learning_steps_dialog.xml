@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="learning step title"
+        android:hint="Learning step title"
         android:ems="10"
         android:id="@+id/learning_step_title" />
 
@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
-        android:text="Note for this step"
+        android:hint="Note for this step"
         android:ems="10"
         android:id="@+id/learning_step_note" />
 

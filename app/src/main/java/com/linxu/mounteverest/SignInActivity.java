@@ -38,9 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-/**
- * Created by lin xu on 25.01.2017.
- */
 public class SignInActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
 
     private static final String TAG = "SignInActivity";
@@ -260,56 +257,56 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             return jsonString;
         }
 
-        @Override
-        protected void onPostExecute(String jsonString) {
-            try {
-
-                JSONObject obj = new JSONObject(jsonString);
-
-                for (int i = 0; i < obj.names().length(); i++) {
-                    Log.d("IDS1", "" + obj.names().get(i));
-
-                    JSONObject userObj = obj.getJSONObject((String) obj.names().get(i));
-                    Log.d("IDS2", "" + userObj);
-
-                    User user = new User((String)userObj.get("id"), (String)userObj.get("username"),
-                            (String)userObj.get("email"), (String)userObj.get("photo"));
-                    userList.add(user);
-
-
-
-                    JSONObject learningStep = new JSONObject();
-                    JSONObject learningSteps = new JSONObject();
-                    if (userObj.has("learning steps")) {
-                        learningStep = userObj.getJSONObject("learning steps");
-                    }
-                    else {
-                        learningStepsPerUser.add(null);
-                    }
-                    if (learningStep.has("learning_step")) {
-                        learningSteps = learningStep.getJSONObject("learning_step");
-
-                        List<LearningStep> steps = new ArrayList<LearningStep>();
-                        for (int j = 0; j < learningSteps.names().length(); j++) {
-                            JSONObject singleStep = learningSteps.getJSONObject((String) learningSteps.names().get(j));
-                            LearningStep step = new LearningStep((String)singleStep.get("date"), (String)singleStep.get("title"),
-                                    (String)singleStep.get("note"));
-                            steps.add(step);
-                        }
-                        Log.d("STEPS! ARRAY", "" + steps.toString());
-                        learningStepsPerUser.add(steps);
-                        Log.d("STEPS! ARRAY", "" + learningStepsPerUser.toString());
-                        Log.d("STEPS! ARRAY", "" + learningStepsPerUser.size());
-                    }
-
-
-                    //TODO
-                    // currentUser abfragen
-
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+//        @Override
+//        protected void onPostExecute(String jsonString) {
+//            try {
+//
+//                JSONObject obj = new JSONObject(jsonString);
+//
+//                for (int i = 0; i < obj.names().length(); i++) {
+//                    Log.d("IDS1", "" + obj.names().get(i));
+//
+//                    JSONObject userObj = obj.getJSONObject((String) obj.names().get(i));
+//                    Log.d("IDS2", "" + userObj);
+//
+//                    User user = new User((String)userObj.get("id"), (String)userObj.get("username"),
+//                            (String)userObj.get("email"), (String)userObj.get("photo"));
+//                    userList.add(user);
+//
+//
+//
+//                    JSONObject learningStep = new JSONObject();
+//                    JSONObject learningSteps = new JSONObject();
+//                    if (userObj.has("learning steps")) {
+//                        learningStep = userObj.getJSONObject("learning steps");
+//                    }
+//                    else {
+//                        learningStepsPerUser.add(null);
+//                    }
+//                    if (learningStep.has("learning_step")) {
+//                        learningSteps = learningStep.getJSONObject("learning_step");
+//
+//                        List<LearningStep> steps = new ArrayList<LearningStep>();
+//                        for (int j = 0; j < learningSteps.names().length(); j++) {
+//                            JSONObject singleStep = learningSteps.getJSONObject((String) learningSteps.names().get(j));
+//                            LearningStep step = new LearningStep((String)singleStep.get("date"), (String)singleStep.get("title"),
+//                                    (String)singleStep.get("note"));
+//                            steps.add(step);
+//                        }
+//                        Log.d("STEPS! ARRAY", "" + steps.toString());
+//                        learningStepsPerUser.add(steps);
+//                        Log.d("STEPS! ARRAY", "" + learningStepsPerUser.toString());
+//                        Log.d("STEPS! ARRAY", "" + learningStepsPerUser.size());
+//                    }
+//
+//
+//                    //TODO
+//                    // currentUser abfragen
+//
+//                }
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 }
