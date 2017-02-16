@@ -25,9 +25,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -167,8 +164,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         currentUser = user;
 
 
-
-        mUserDatabaseReference.child("User").child(user.getId()).setValue(user);
+        // mUserDatabaseReference.child("User").child(user.getId()).setValue(user);
 
 
 
@@ -188,7 +184,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                     Log.w(TAG, "signInWithCredential", task.getException());
                     Toast.makeText(SignInActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                 }else{
-                    startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                    startActivity(new Intent(SignInActivity.this, SelectProject.class));
                     finish();
                 }
             }

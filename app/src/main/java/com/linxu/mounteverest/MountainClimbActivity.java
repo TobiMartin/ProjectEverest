@@ -4,23 +4,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.view.CollapsibleActionView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
-import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 
@@ -29,17 +23,10 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;;
-import com.google.firebase.database.FirebaseDatabase;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
-
-
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class MountainClimbActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private ProgressView progressView;
     private pl.droidsonroids.gif.GifTextView climber;
@@ -67,11 +54,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         // Set default username is anonymous.
         mUsername = ANONYMOUS;
 
-
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
         //to avoid sign in
+
 
 
         if (mFirebaseUser == null) {
@@ -91,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .addApi(Auth.GOOGLE_SIGN_IN_API)
                 //.addApi(AppInvite.API)
                 .build();
+
         if(AddProject.addProjectDoneBoolean == false){
             openAddProjectDialog();
             AddProject.addProjectDoneBoolean = true;
@@ -98,12 +86,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         progressView = (ProgressView)findViewById(R.id.progress_view);
 
-        progressView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                zoomViewFromThumb();
-            }
-        });
+
 
         climber = (pl.droidsonroids.gif.GifTextView)findViewById(R.id.climber_gif_text_view);
         int mm = 4;
@@ -126,8 +109,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             }
         });
 
-
-
         CircularImageView circularImageView = (CircularImageView)findViewById(R.id.circle_image_view);
         circularImageView.setX(140f);
         circularImageView.setY(400f);
@@ -141,18 +122,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         // or with custom param
         circularImageView.setShadowRadius(15);
         circularImageView.setShadowColor(Color.RED);
-
     }
 
     private void openAddProjectDialog() {
-        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        AlertDialog alertDialog = new AlertDialog.Builder(MountainClimbActivity.this).create();
         alertDialog.setTitle("Hi");
         alertDialog.setMessage("Set your learning steps!");
 
         alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Intent intent = new Intent(MainActivity.this, AddProject.class);
+                Intent intent = new Intent(MountainClimbActivity.this, AddProject.class);
                 startActivity(intent);
             }
         });
@@ -160,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     private void openDialog() {
-        final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        final AlertDialog alertDialog = new AlertDialog.Builder(MountainClimbActivity.this).create();
         alertDialog.setTitle("Next Step");
         LearningStep learningStep = CustomSliderView.getLearningStepList().get(
                 progressView.getNLearningSteps() - 1 - currentStep);
@@ -180,17 +160,23 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 }
             }
         });
+
         alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                schneeSturm();
                 alertDialog.dismiss();
             }
         });
         alertDialog.show();
     }
 
+    private void schneeSturm() {
+
+    }
+
     private void showSuccessAlert() {
-        final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        final AlertDialog alertDialog = new AlertDialog.Builder(MountainClimbActivity.this).create();
         alertDialog.setTitle("Congratulations!");
         alertDialog.setMessage("You have completed all learning steps!");
 
@@ -201,10 +187,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             }
         });
         alertDialog.show();
-    }
-
-    private void zoomViewFromThumb() {
-        //todo: do zoom in animation
     }
 
     private void moveToNextLadder(View view) {
@@ -259,8 +241,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             case R.id.add_project:
                 startActivity(new Intent(this, AddProject.class));
                 return true;
-            case R.id.edit_project:
-                startActivity(new Intent(this, EditProject.class));
+            case R.id.select_project:
+                startActivity(new Intent(this, SelectProject.class));
                 return true;
             case R.id.sign_out_menu:
                 mFirebaseAuth.signOut();

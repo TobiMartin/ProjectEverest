@@ -15,16 +15,15 @@
         <activity android:name=".SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".AddProject"></activity>
         <activity android:name=".ProfileDetail"></activity>
         <activity android:name=".Search"></activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MountainClimbActivity"></activity>
         <activity android:name=".ViewProfiles"></activity>
-        <activity android:name=".EditProject"></activity>
+        <activity android:name=".SelectProject"></activity>
     </application>
 
 </manifest>

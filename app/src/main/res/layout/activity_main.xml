@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.linxu.mounteverest.MainActivity">
+    tools:context="com.linxu.mounteverest.MountainClimbActivity">
 
     <com.mikhaellopez.circularimageview.CircularImageView
         android:layout_width="250dp"

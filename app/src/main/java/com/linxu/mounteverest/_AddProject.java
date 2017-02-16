@@ -152,7 +152,7 @@ public class _AddProject extends AppCompatActivity {
     private void saveProject() {
         formValidate();
         caculateTotalProjectDuration();
-        Intent intent = new Intent(getBaseContext(), MainActivity.class);
+        Intent intent = new Intent(getBaseContext(), MountainClimbActivity.class);
         intent.putExtra("learningStepPercent1", learningStepPercent1.getText().toString());
         intent.putExtra("learningStepPercent2", learningStepPercent2.getText().toString());
         intent.putExtra("learningStepPercent3", learningStepPercent3.getText().toString());

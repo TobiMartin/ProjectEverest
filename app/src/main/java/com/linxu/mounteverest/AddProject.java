@@ -5,16 +5,12 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import org.w3c.dom.Text;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -54,11 +50,17 @@ public class AddProject extends AppCompatActivity {
         customSliderView.register(this);
         listView = (ListView)findViewById(R.id.list_view);
 
+        FirebaseDatabase mFirebaseDatabase = SignInActivity.getmFirebaseDatabase();
+        final DatabaseReference mProjectDatabaseRef = mFirebaseDatabase.getReference().child("User").child(SignInActivity.currentUser.getId()).child("Projects");
+
+
         addProjectDone = (Button)findViewById(R.id.add_project_done);
         addProjectDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AddProject.this, MainActivity.class);
+                mProjectDatabaseRef.push().setValue(CustomSliderView.getLearningStepList());
+
+                Intent intent = new Intent(AddProject.this, MountainClimbActivity.class);
                 startActivity(intent);
                 addProjectDoneBoolean = true;
             }

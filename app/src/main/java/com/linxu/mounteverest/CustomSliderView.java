@@ -81,8 +81,7 @@ public class CustomSliderView extends View {
     private static List<LearningStep> learningStepList;
 
     private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mLearningStepsDatabaseReference;
-    private DatabaseReference mUserDatabaseRefercen;
+    private DatabaseReference mProjectDatabaseRef;
 
 
 
@@ -137,17 +136,12 @@ public class CustomSliderView extends View {
 
 
         //firebase database initialize
-        mFirebaseDatabase = SignInActivity.getmFirebaseDatabase();
-        
-        //mLearningStepsDatabaseReference = mFirebaseDatabase.getReference().child("User").child(SignInActivity.getCurrentUser().getId()).child("learning steps");
-        //mUserDatabaseRefercen = SignInActivity.getmUserDatabaseReference();
-        //mLearningStepsDatabaseReference = mUserDatabaseRefercen.child("User").child(SignInActivity.getCurrentUser().getId()).child("learning steps");
 
-        mLearningStepsDatabaseReference = mFirebaseDatabase.getReference().child("User").child(SignInActivity.currentUser.getId()).child("learning steps");
+
+
+
 
         learningStepList = new ArrayList<>();
-
-        Log.d("Init", "was called!");
 
     }
 
@@ -264,7 +258,7 @@ public class CustomSliderView extends View {
             @Override
             public void onClick(View view) {
                 LearningStep learningStep = new LearningStep(date, String.valueOf(title.getText()), String.valueOf(note.getText()));
-                //mLearningStepsDatabaseReference.child("learning_step").push().setValue(learningStep);
+                //
                 learningStepList.add(learningStep);
 
                 addProject.upDateLearningSteps(learningStepList);
@@ -283,6 +277,7 @@ public class CustomSliderView extends View {
                 dialog.dismiss();
             }
         });
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
 
