@@ -1,17 +1,24 @@
 package com.linxu.mounteverest;
 
 import android.content.Context;
+import android.drm.DrmStore;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by lin xu on 21.01.2017.
@@ -21,7 +28,11 @@ public class ProgressView extends View{
 
     private Rect progressBar;
 
-    private ArrayList<Rect> ladderMarkers;
+    public static ArrayList<Rect> getLadderMarkers() {
+        return ladderMarkers;
+    }
+
+    private static ArrayList<Rect> ladderMarkers;
     private Paint progressBarPaint;
     private Paint ladderPaint;
     private DateBaseHandler db;
@@ -40,7 +51,7 @@ public class ProgressView extends View{
         int x = 400;
         int y = 150;
         int sideWidth = 200;
-        int sideHeight = 1300;
+        int sideHeight = 800; //1300
 
 
         String[] dbs = getContext().databaseList();
@@ -52,9 +63,20 @@ public class ProgressView extends View{
         progressBar = new Rect(x, y, x + sideWidth, y + sideHeight);
         ladderMarkers = new ArrayList<>();
 
-        float diff = (progressBar.bottom - progressBar.top)/11; //11 = i + 1;
-        for(int i = 0; i < 10; i++){
-            ladderMarkers.add(new Rect(progressBar.left, (int)(progressBar.bottom - diff * (i + 1)  - 10 ), progressBar.right, (int)(progressBar.bottom - diff * (i + 1) + 10)));
+        if(AddProject.addProjectDoneBoolean == false){
+            float diff = (progressBar.bottom - progressBar.top)/11; //11 = i + 1;
+            for(int i = 0; i < 10; i++){
+                Rect rect = new Rect(progressBar.left, (int)(progressBar.bottom - diff * (i + 1)  - 10 ), progressBar.right, (int)(progressBar.bottom - diff * (i + 1) + 10));
+                ladderMarkers.add(rect);
+            }
+
+        }else{
+            List<LearningStep> learningStepList = CustomSliderView.getLearningStepList();
+            float diff = (progressBar.bottom - progressBar.top)/(learningStepList.size() +1); //11 = i + 1;
+            for(int i = 0; i < learningStepList.size(); i++){
+                Rect rect = new Rect(progressBar.left, (int)(progressBar.bottom - diff * (i + 1)  - 10 ), progressBar.right, (int)(progressBar.bottom - diff * (i + 1) + 10));
+                ladderMarkers.add(rect);
+            }
         }
 
         progressBarPaint = new Paint();

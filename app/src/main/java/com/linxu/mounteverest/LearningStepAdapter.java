@@ -21,7 +21,7 @@ public class LearningStepAdapter extends ArrayAdapter<LearningStep>{
     private final List<LearningStep> learningStepList;
 
     public LearningStepAdapter(Context context, List<LearningStep> learningStepList){
-            super(context, -1, learningStepList);
+        super(context, -1, learningStepList);
         this.context = context;
         this.learningStepList = learningStepList;
     }

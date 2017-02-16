@@ -1,6 +1,7 @@
 package com.linxu.mounteverest;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -34,7 +35,7 @@ public class AddProject extends AppCompatActivity {
     private boolean endDateSet = false;
 
     private Button addProjectDone;
-
+    public static Boolean addProjectDoneBoolean = false;
 
 
     Bundle extras;
@@ -42,6 +43,8 @@ public class AddProject extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_project);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         customSliderView = (CustomSliderView)findViewById(R.id.slider);
         startTextView = (TextView)findViewById(R.id.startDate);
@@ -53,9 +56,9 @@ public class AddProject extends AppCompatActivity {
         addProjectDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(AddProject.this, MainActivity.class);
                 startActivity(intent);
+                addProjectDoneBoolean = true;
             }
         });
     }
