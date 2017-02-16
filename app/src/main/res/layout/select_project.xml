@@ -4,9 +4,17 @@
     android:layout_height="match_parent"
     xmlns:card_view="http://schemas.android.com/apk/res-auto">
 
+    <TextView
+        android:text="Please add projects using the item menu"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/hint"
+        android:paddingLeft="10dp"/>
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:id="@+id/project_list_view"/>
+
 </LinearLayout>

@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,6 +25,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import org.w3c.dom.Text;
@@ -44,7 +47,6 @@ public class MountainClimbActivity extends AppCompatActivity implements GoogleAp
 
     public static final String ANONYMOUS = "anonymous";
     private float currentPos;
-    private int currentStep = 0;
 
     private TextView projectNameView;
 
@@ -116,12 +118,12 @@ public class MountainClimbActivity extends AppCompatActivity implements GoogleAp
         climber.setLayoutParams(parm);
 
         climber.setX(380f);
-        climber.setY(progressView.rungY(0));
+        climber.setY(progressView.rungY(currentProject.getCurrentStep()));
 
         climber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (currentStep < progressView.getNLearningSteps()) {
+                if (currentProject.getCurrentStep() < progressView.getNLearningSteps()) {
                     openDialog();
                 }
             }
@@ -140,6 +142,11 @@ public class MountainClimbActivity extends AppCompatActivity implements GoogleAp
         // or with custom param
         circularImageView.setShadowRadius(15);
         circularImageView.setShadowColor(Color.RED);
+
+
+        if (currentProject.getCurrentStep() >= progressView.getNLearningSteps() ) {
+            showSuccessAlert();
+        }
     }
 
     //private void openAddProjectDialog() {
@@ -161,7 +168,7 @@ public class MountainClimbActivity extends AppCompatActivity implements GoogleAp
         final AlertDialog alertDialog = new AlertDialog.Builder(MountainClimbActivity.this).create();
         alertDialog.setTitle("Next Step");
         LearningStep learningStep = currentProject.getLearningSteps().get(
-                progressView.getNLearningSteps() - 1 - currentStep);
+                progressView.getNLearningSteps() - 1 - currentProject.getCurrentStep());
 
         alertDialog.setMessage("Have you finished your current step for " +
                 learningStep.getDate() + "? Title: " +
@@ -170,10 +177,10 @@ public class MountainClimbActivity extends AppCompatActivity implements GoogleAp
         alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (currentStep == progressView.getNLearningSteps() - 1) {
+                if (currentProject.getCurrentStep() == progressView.getNLearningSteps() - 1) {
                     showSuccessAlert();
                 }
-                if (currentStep <= progressView.getNLearningSteps() - 1) {
+                if (currentProject.getCurrentStep() <= progressView.getNLearningSteps() - 1) {
                     moveToNextLadder(climber);
                 }
             }
@@ -210,12 +217,12 @@ public class MountainClimbActivity extends AppCompatActivity implements GoogleAp
     }
 
     private void moveToNextLadder(View view) {
-        currentStep += 1;
+        currentProject.setCurrentStep(currentProject.getCurrentStep() + 1);
         float previousPos = climber.getY();
-        currentPos = progressView.rungY(currentStep);
+        currentPos = progressView.rungY(currentProject.getCurrentStep());
 
         // On last step, move outside the screen
-        if (currentStep == progressView.getNLearningSteps()) {
+        if (currentProject.getCurrentStep() == progressView.getNLearningSteps()) {
             currentPos = -climber.getHeight();
         }
 
@@ -225,7 +232,7 @@ public class MountainClimbActivity extends AppCompatActivity implements GoogleAp
         moveAnimation.setDuration(1000);
 
         //moveAnimation.setFillAfter(true);
-        if (currentStep == progressView.getNLearningSteps()) {
+        if (currentProject.getCurrentStep() == progressView.getNLearningSteps()) {
             Animation alphaAnimation = new AlphaAnimation(1.0f, 0.0f);
             alphaAnimation.setDuration(1000);
             //alphaAnimation.setFillAfter(true);
@@ -238,6 +245,20 @@ public class MountainClimbActivity extends AppCompatActivity implements GoogleAp
             view.startAnimation(comp);
         } else {
             view.startAnimation(moveAnimation);
+        }
+
+        updateProjectInDatabase();
+    }
+
+    private void updateProjectInDatabase() {
+        FirebaseDatabase mFirebaseDatabase = SignInActivity.getmFirebaseDatabase();
+        final DatabaseReference mProjectDatabaseRef = mFirebaseDatabase.getReference().child("User").child(SignInActivity.currentUser.getId()).child("Projects");
+
+        if (SelectProjectActivity.getProjectKeyMap().containsKey(currentProject)) {
+            mProjectDatabaseRef.child(SelectProjectActivity.getProjectKeyMap().get(currentProject)).setValue(currentProject);
+
+        } else {
+            Log.d("Error", "ProjectKeyMap does not contain currentProject!");
         }
     }
 

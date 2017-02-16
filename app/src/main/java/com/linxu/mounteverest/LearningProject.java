@@ -11,6 +11,12 @@ public class LearningProject {
     private List<LearningStep> learningSteps;
     private String name;
 
+    public int getCurrentStep() {
+        return currentStep;
+    }
+
+    private int currentStep;
+
     public LearningProject() {}
 
     public LearningProject(List<LearningStep> learningSteps, String name) {
@@ -42,4 +48,7 @@ public class LearningProject {
         return name;
     }
 
+    public void setCurrentStep(int currentStep) {
+        this.currentStep = currentStep;
+    }
 }

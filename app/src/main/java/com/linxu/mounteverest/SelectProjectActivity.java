@@ -29,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.R.attr.value;
 
@@ -44,6 +45,8 @@ public class SelectProjectActivity extends AppCompatActivity implements GoogleAp
     private ListView projectListView;
     private LearningProjectAdapter learningProjectAdapter;
     private List<LearningProject> projectList;
+
+    private static Map<LearningProject, String> projectKeyMap = new HashMap<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,10 +81,13 @@ public class SelectProjectActivity extends AppCompatActivity implements GoogleAp
             public void onDataChange(DataSnapshot dataSnapshot) {
                 projectList.clear();
 
-                for (DataSnapshot parentSnap : dataSnapshot.getChildren()) {
-                    LearningProject project = parentSnap.getValue(LearningProject.class);
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    LearningProject project = child.getValue(LearningProject.class);
+                    Log.d("the key is", child.getKey());
+
+                    projectKeyMap.put(project, child.getKey());
+
                     projectList.add(project);
-                    Log.d("projects", parentSnap.getKey() + ": " + project);
                 }
                 learningProjectAdapter.notifyDataSetChanged();
             }
@@ -131,6 +137,10 @@ public class SelectProjectActivity extends AppCompatActivity implements GoogleAp
         Intent intent = new Intent(this, ProfileDetail.class);
         //intent.putExtra("User", currentUser);
         startActivity(intent);
+    }
+
+    public static Map<LearningProject, String> getProjectKeyMap() {
+        return projectKeyMap;
     }
 
     @Override
