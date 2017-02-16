@@ -103,11 +103,11 @@ public class CustomSliderView extends View {
 
         //delete Database
 
-        String[] dbs = getContext().databaseList();
-        for(String database: dbs){
-            Log.d("DELETE DB", database);
-            getContext().deleteDatabase(database);
-        }
+        //String[] dbs = getContext().databaseList();
+        //for(String database: dbs){
+        //    Log.d("DELETE DB", database);
+        //    getContext().deleteDatabase(database);
+        //}
 
         // create a slider that we'll draw later
         sliderRef = new Rect(x, y, x + sideWidth, y + sideHeight);

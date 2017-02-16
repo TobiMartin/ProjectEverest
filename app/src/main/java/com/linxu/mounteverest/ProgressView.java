@@ -35,7 +35,6 @@ public class ProgressView extends View{
     private static ArrayList<Rect> ladderMarkers;
     private Paint progressBarPaint;
     private Paint ladderPaint;
-    private DateBaseHandler db;
     private int nLearningSteps;
 
     public ProgressView(Context context) {
@@ -79,7 +78,6 @@ public class ProgressView extends View{
         ladderPaint = new Paint();
         ladderPaint.setColor(Color.BLACK);
 
-        db = new DateBaseHandler(getContext());
     }
 
 
