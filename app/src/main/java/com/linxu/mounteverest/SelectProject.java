@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,9 +17,18 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import static android.R.attr.value;
 
 /**
  * Created by lin xu on 15.02.2017.
@@ -43,12 +53,35 @@ public class SelectProject extends AppCompatActivity implements GoogleApiClient.
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        //projectList = new ArrayList<>();
-        //projectList.add(new LearningProject(null, "meinTextProject1"));
-        projectList = loadProjectsFromFirebase();
+        projectList = new ArrayList<>();
+
         projectListView = (ListView)findViewById(R.id.project_list_view);
         learningProjectAdapter = new LearningProjectAdapter(this, projectList);
         projectListView.setAdapter(learningProjectAdapter);
+
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference().child("User").child(SignInActivity.currentUser.getId()).child("Projects");
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                projectList.clear();
+
+                for (DataSnapshot parentSnap : dataSnapshot.getChildren()) {
+                    LearningProject project = parentSnap.getValue(LearningProject.class);
+                    projectList.add(project);
+                    Log.d("projects", parentSnap.getKey() + ": " + project);
+
+                }
+
+                learningProjectAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
 
         googleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
@@ -58,9 +91,6 @@ public class SelectProject extends AppCompatActivity implements GoogleApiClient.
 
     }
 
-    private List<LearningProject> loadProjectsFromFirebase() {
-        return new ArrayList<>();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -58,7 +58,11 @@ public class AddProject extends AppCompatActivity {
         addProjectDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mProjectDatabaseRef.push().setValue(CustomSliderView.getLearningStepList());
+                mProjectDatabaseRef.push().setValue(
+                        new LearningProject(
+                            CustomSliderView.getLearningStepList(),
+                                "name" + (int)(1000 * Math.random())
+                                ));
 
                 Intent intent = new Intent(AddProject.this, MountainClimbActivity.class);
                 startActivity(intent);

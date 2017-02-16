@@ -11,10 +11,20 @@ public class LearningProject {
     private List<LearningStep> learningSteps;
     private String name;
 
+    public LearningProject() {}
+
     public LearningProject(List<LearningStep> learningSteps, String name) {
         this.learningSteps = learningSteps;
         this.name = name;
     }
+    @Override
+    public String toString() {
+        return "LearningProject{" +
+                "name='" + name + '\'' +
+                '}';
+    }
+
+
 
     public void setLearningSteps(List<LearningStep> learningSteps) {
         this.learningSteps = learningSteps;
