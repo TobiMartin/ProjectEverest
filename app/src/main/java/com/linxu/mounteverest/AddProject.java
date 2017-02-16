@@ -76,6 +76,7 @@ public class AddProject extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        addProjectDone.setEnabled(false);
     }
 
     private void openSetNameDialog() {
@@ -122,6 +123,10 @@ public class AddProject extends AppCompatActivity {
     public void changeEndDate(String date){
         endTextView.setText(date);
         endDateSet = true;
+    }
+
+    public void notifyAddLearningStep() {
+        addProjectDone.setEnabled(true);
     }
 
     public boolean isStartDateSet(){

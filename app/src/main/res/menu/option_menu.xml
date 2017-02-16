@@ -5,7 +5,7 @@
         android:title="Add project"></item>
     <item
         android:id="@+id/select_project"
-        android:title="Edit project"></item>
+        android:title="Select project"></item>
     <item
         android:id="@+id/profile"
         android:title="Profile"></item>

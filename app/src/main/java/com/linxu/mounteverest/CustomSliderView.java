@@ -263,6 +263,7 @@ public class CustomSliderView extends View {
 
                 addProject.upDateLearningSteps(learningStepList);
                 eventMarker.setLearningStep(learningStep);
+                addProject.notifyAddLearningStep();
                 dialog.dismiss();
             }
         });

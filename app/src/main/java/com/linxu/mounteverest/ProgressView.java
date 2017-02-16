@@ -64,8 +64,9 @@ public class ProgressView extends View{
         ladderMarkers = new ArrayList<>();
 
 
-        List<LearningStep> learningStepList = CustomSliderView.getLearningStepList();
+        List<LearningStep> learningStepList = MountainClimbActivity.getCurrentProject().getLearningSteps();
         nLearningSteps = learningStepList.size();
+
         float diff = (progressBar.bottom - progressBar.top)/(learningStepList.size()); //11 = i + 1;
         for(int i = 0; i < learningStepList.size(); i++){
             Rect rect = new Rect(progressBar.left, (int)(progressBar.bottom - diff * (i + 1)  - 10 ), progressBar.right, (int)(progressBar.bottom - diff * (i + 1) + 10));

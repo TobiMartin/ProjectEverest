@@ -54,6 +54,10 @@ public class MountainClimbActivity extends AppCompatActivity implements GoogleAp
         MountainClimbActivity.currentProject = currentProject;
     }
 
+    public static LearningProject getCurrentProject() {
+        return currentProject;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
