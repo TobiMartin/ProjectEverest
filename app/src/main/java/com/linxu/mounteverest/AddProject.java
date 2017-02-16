@@ -1,11 +1,16 @@
 package com.linxu.mounteverest;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -31,9 +36,10 @@ public class AddProject extends AppCompatActivity {
 
     private boolean startDateSet = false;
     private boolean endDateSet = false;
-
     private Button addProjectDone;
-    public static Boolean addProjectDoneBoolean = false;
+
+    private String projectName;
+    private TextView projectNameView;
 
 
     Bundle extras;
@@ -49,10 +55,12 @@ public class AddProject extends AppCompatActivity {
         endTextView = (TextView)findViewById(R.id.endDate);
         customSliderView.register(this);
         listView = (ListView)findViewById(R.id.list_view);
+        projectNameView = (TextView)findViewById(R.id.project_name);
 
         FirebaseDatabase mFirebaseDatabase = SignInActivity.getmFirebaseDatabase();
         final DatabaseReference mProjectDatabaseRef = mFirebaseDatabase.getReference().child("User").child(SignInActivity.currentUser.getId()).child("Projects");
 
+        openSetNameDialog();
 
         addProjectDone = (Button)findViewById(R.id.add_project_done);
         addProjectDone.setOnClickListener(new View.OnClickListener() {
@@ -61,14 +69,38 @@ public class AddProject extends AppCompatActivity {
                 mProjectDatabaseRef.push().setValue(
                         new LearningProject(
                             CustomSliderView.getLearningStepList(),
-                                "name" + (int)(1000 * Math.random())
+                                projectName
                                 ));
 
-                Intent intent = new Intent(AddProject.this, MountainClimbActivity.class);
+                Intent intent = new Intent(AddProject.this, SelectProjectActivity.class);
                 startActivity(intent);
-                addProjectDoneBoolean = true;
             }
         });
+    }
+
+    private void openSetNameDialog() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(AddProject.this).create();
+        alertDialog.setTitle("Set Project Name");
+        alertDialog.setMessage("Please give your project a name!");
+        final EditText input = new EditText(AddProject.this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+        alertDialog.setView(input);
+
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                projectName = input.getText().toString();
+                if (projectName.equals("")) {
+                    projectName = "Untitled Project";
+                }
+                projectNameView.setText(projectName);
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
     }
 
     public void upDateLearningSteps(List learningSteps){

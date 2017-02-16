@@ -23,7 +23,7 @@
         <activity android:name=".Search"></activity>
         <activity android:name=".MountainClimbActivity"></activity>
         <activity android:name=".ViewProfiles"></activity>
-        <activity android:name=".SelectProject"></activity>
+        <activity android:name=".SelectProjectActivity"></activity>
     </application>
 
 </manifest>

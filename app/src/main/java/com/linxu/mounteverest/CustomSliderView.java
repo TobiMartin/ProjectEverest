@@ -383,6 +383,10 @@ public class CustomSliderView extends View {
         return learningStepList;
     }
 
+    public static void setLearningStepList(List<LearningStep> learningStepList) {
+        CustomSliderView.learningStepList = learningStepList;
+    }
+
     private void discreteSlider() {
         //double dayCount = (endDateInMillis - startDateInMillis)/(1000 * 60 * 60 * 24);
 

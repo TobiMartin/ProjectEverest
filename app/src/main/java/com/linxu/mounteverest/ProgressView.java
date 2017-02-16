@@ -64,21 +64,13 @@ public class ProgressView extends View{
         progressBar = new Rect(x, y, x + sideWidth, y + sideHeight);
         ladderMarkers = new ArrayList<>();
 
-        if(!AddProject.addProjectDoneBoolean){
-            float diff = (progressBar.bottom - progressBar.top)/11; //11 = i + 1;
-            for(int i = 0; i < 10; i++){
-                Rect rect = new Rect(progressBar.left, (int)(progressBar.bottom - diff * (i + 1)  - 10 ), progressBar.right, (int)(progressBar.bottom - diff * (i + 1) + 10));
-                ladderMarkers.add(rect);
-            }
 
-        }else{
-            List<LearningStep> learningStepList = CustomSliderView.getLearningStepList();
-            nLearningSteps = learningStepList.size();
-            float diff = (progressBar.bottom - progressBar.top)/(learningStepList.size()); //11 = i + 1;
-            for(int i = 0; i < learningStepList.size(); i++){
-                Rect rect = new Rect(progressBar.left, (int)(progressBar.bottom - diff * (i + 1)  - 10 ), progressBar.right, (int)(progressBar.bottom - diff * (i + 1) + 10));
-                ladderMarkers.add(rect);
-            }
+        List<LearningStep> learningStepList = CustomSliderView.getLearningStepList();
+        nLearningSteps = learningStepList.size();
+        float diff = (progressBar.bottom - progressBar.top)/(learningStepList.size()); //11 = i + 1;
+        for(int i = 0; i < learningStepList.size(); i++){
+            Rect rect = new Rect(progressBar.left, (int)(progressBar.bottom - diff * (i + 1)  - 10 ), progressBar.right, (int)(progressBar.bottom - diff * (i + 1) + 10));
+            ladderMarkers.add(rect);
         }
         
         progressBarPaint = new Paint();

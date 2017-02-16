@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.android.gms.auth.api.Auth;
@@ -34,7 +36,7 @@ import static android.R.attr.value;
  * Created by lin xu on 15.02.2017.
  */
 
-public class SelectProject extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class SelectProjectActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private GoogleApiClient googleApiClient;
@@ -58,6 +60,15 @@ public class SelectProject extends AppCompatActivity implements GoogleApiClient.
         projectListView = (ListView)findViewById(R.id.project_list_view);
         learningProjectAdapter = new LearningProjectAdapter(this, projectList);
         projectListView.setAdapter(learningProjectAdapter);
+        projectListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                MountainClimbActivity.setCurrentProject(projectList.get(i));
+                Intent intent = new Intent(SelectProjectActivity.this, MountainClimbActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference().child("User").child(SignInActivity.currentUser.getId()).child("Projects");
@@ -71,9 +82,7 @@ public class SelectProject extends AppCompatActivity implements GoogleApiClient.
                     LearningProject project = parentSnap.getValue(LearningProject.class);
                     projectList.add(project);
                     Log.d("projects", parentSnap.getKey() + ": " + project);
-
                 }
-
                 learningProjectAdapter.notifyDataSetChanged();
             }
 
@@ -111,7 +120,6 @@ public class SelectProject extends AppCompatActivity implements GoogleApiClient.
             case R.id.sign_out_menu:
                 mFirebaseAuth.signOut();
                 Auth.GoogleSignInApi.signOut(googleApiClient);
-                AddProject.addProjectDoneBoolean = false;
                 startActivity(new Intent(this, SignInActivity.class));
                 return true;
             default:

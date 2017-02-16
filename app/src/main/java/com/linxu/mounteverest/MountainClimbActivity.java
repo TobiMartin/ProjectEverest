@@ -17,6 +17,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
@@ -24,6 +25,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;;
 import com.mikhaellopez.circularimageview.CircularImageView;
+
+import org.w3c.dom.Text;
 
 
 public class MountainClimbActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
@@ -43,6 +46,14 @@ public class MountainClimbActivity extends AppCompatActivity implements GoogleAp
     private float currentPos;
     private int currentStep = 0;
 
+    private TextView projectNameView;
+
+    private static LearningProject currentProject;
+
+    public static void setCurrentProject(LearningProject currentProject) {
+        MountainClimbActivity.currentProject = currentProject;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +61,9 @@ public class MountainClimbActivity extends AppCompatActivity implements GoogleAp
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         setContentView(R.layout.activity_main);
+        projectNameView = (TextView)findViewById(R.id.project_name_view);
+        projectNameView.setText(currentProject.getName());
+        projectNameView.bringToFront();
         // Initialize Firebase Auth
         // Set default username is anonymous.
         mUsername = ANONYMOUS;
@@ -79,10 +93,10 @@ public class MountainClimbActivity extends AppCompatActivity implements GoogleAp
                 //.addApi(AppInvite.API)
                 .build();
 
-        if(AddProject.addProjectDoneBoolean == false){
-            openAddProjectDialog();
-            AddProject.addProjectDoneBoolean = true;
-        }
+        //if(AddProject.addProjectDoneBoolean == false){
+        //    openAddProjectDialog();
+        //    AddProject.addProjectDoneBoolean = true;
+        //}
 
         progressView = (ProgressView)findViewById(R.id.progress_view);
 
@@ -124,25 +138,25 @@ public class MountainClimbActivity extends AppCompatActivity implements GoogleAp
         circularImageView.setShadowColor(Color.RED);
     }
 
-    private void openAddProjectDialog() {
-        AlertDialog alertDialog = new AlertDialog.Builder(MountainClimbActivity.this).create();
-        alertDialog.setTitle("Hi");
-        alertDialog.setMessage("Set your learning steps!");
-
-        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Intent intent = new Intent(MountainClimbActivity.this, AddProject.class);
-                startActivity(intent);
-            }
-        });
-        alertDialog.show();
-    }
+    //private void openAddProjectDialog() {
+    //    AlertDialog alertDialog = new AlertDialog.Builder(MountainClimbActivity.this).create();
+    //    alertDialog.setTitle("Hi");
+    //    alertDialog.setMessage("Set your learning steps!");
+//
+    //    alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
+    //        @Override
+    //        public void onClick(DialogInterface dialogInterface, int i) {
+    //            Intent intent = new Intent(MountainClimbActivity.this, AddProject.class);
+    //            startActivity(intent);
+    //        }
+    //    });
+    //    alertDialog.show();
+    //}
 
     private void openDialog() {
         final AlertDialog alertDialog = new AlertDialog.Builder(MountainClimbActivity.this).create();
         alertDialog.setTitle("Next Step");
-        LearningStep learningStep = CustomSliderView.getLearningStepList().get(
+        LearningStep learningStep = currentProject.getLearningSteps().get(
                 progressView.getNLearningSteps() - 1 - currentStep);
 
         alertDialog.setMessage("Have you finished your current step for " +
@@ -183,6 +197,8 @@ public class MountainClimbActivity extends AppCompatActivity implements GoogleAp
         alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(MountainClimbActivity.this, SelectProjectActivity.class);
+                startActivity(intent);
                 alertDialog.dismiss();
             }
         });
@@ -242,13 +258,12 @@ public class MountainClimbActivity extends AppCompatActivity implements GoogleAp
                 startActivity(new Intent(this, AddProject.class));
                 return true;
             case R.id.select_project:
-                startActivity(new Intent(this, SelectProject.class));
+                startActivity(new Intent(this, SelectProjectActivity.class));
                 return true;
             case R.id.sign_out_menu:
                 mFirebaseAuth.signOut();
                 Auth.GoogleSignInApi.signOut(googleApiClient);
                 mUsername = ANONYMOUS;
-                AddProject.addProjectDoneBoolean = false;
                 startActivity(new Intent(this, SignInActivity.class));
                 return true;
             default:
