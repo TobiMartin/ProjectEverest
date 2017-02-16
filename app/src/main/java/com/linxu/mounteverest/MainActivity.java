@@ -2,6 +2,7 @@ package com.linxu.mounteverest;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -55,6 +56,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         setContentView(R.layout.activity_main);
         // Initialize Firebase Auth
         // Set default username is anonymous.
@@ -209,6 +213,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 return true;
             case R.id.add_project:
                 startActivity(new Intent(this, AddProject.class));
+                return true;
+            case R.id.edit_project:
+                startActivity(new Intent(this, EditProject.class));
                 return true;
             case R.id.sign_out_menu:
                 mFirebaseAuth.signOut();

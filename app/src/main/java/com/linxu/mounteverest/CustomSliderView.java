@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -21,9 +20,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -32,35 +28,40 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by lin xu on 15.12.2016.
  */
 
 public class CustomSliderView extends View {
+    private Rect sliderRef;
     private Rect slider;
+
     private Paint sliderPaint;
     private GestureDetector gestureDetector;
 
-    private List<Rect> eventMarkers;
-    private Rect draggedMarker = null;
-    private final int eventMarkerHeight = 20;
+    private List<EventMarker> eventMarkers;
+    private EventMarker draggedMarker = null;
+    private final double eventMarkerRelativeHeight = 0.94;
     private Paint eventPaint;
 
-    private float referenceHeight = 1600.0f;
+    private float referenceHeight = 1300.0f;
     private float referenceWidth = 800.0f;
 
     private int currentWidth = 800;
     private int currentHeight = 1300;
 
     private Rect[] discreteMarkers;
+    private Rect[] discreteMarkersRef;
     private Paint discreteMarkerPaint;
 
     private Rect startDateRegion;
+    private Rect startDateRegionRef;
+
     private Rect endDateRegion;
+    private Rect endDateRegionRef;
+
     private Paint dateRegionPaint;
 
     private AddProject addProject;
@@ -77,19 +78,13 @@ public class CustomSliderView extends View {
     private Long startDateInMillis;
     private Long endDateInMillis;
 
-    private float dayCount = 0f;
-
     private boolean slideDiscreteable;
-
-    private int day;
 
     private static List<LearningStep> learningStepList;
 
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mLearningStepsDatabaseReference;
     private DatabaseReference mUserDatabaseRefercen;
-
-    private LearningStepAdapter mLearningStepAdapter;
 
 
 
@@ -118,6 +113,7 @@ public class CustomSliderView extends View {
         }
 
         // create a slider that we'll draw later
+        sliderRef = new Rect(x, y, x + sideWidth, y + sideHeight);
         slider = new Rect(x, y, x + sideWidth, y + sideHeight);
 
         eventMarkers = new ArrayList<>();
@@ -135,7 +131,10 @@ public class CustomSliderView extends View {
         dateRegionPaint = new Paint();
         dateRegionPaint.setColor(Color.CYAN);
 
+        startDateRegionRef = new Rect(slider.left, slider.bottom + 10, slider.right, slider.bottom + 100);
         startDateRegion = new Rect(slider.left, slider.bottom + 10, slider.right, slider.bottom + 100);
+
+        endDateRegionRef = new Rect(slider.left, slider.top - 100, slider.right, slider.top - 10);
         endDateRegion = new Rect(slider.left, slider.top - 100, slider.right, slider.top - 10);
 
 
@@ -149,6 +148,9 @@ public class CustomSliderView extends View {
         mLearningStepsDatabaseReference = mFirebaseDatabase.getReference().child("User").child(SignInActivity.currentUser.getId()).child("learning steps");
 
         learningStepList = new ArrayList<>();
+
+        Log.d("Init", "was called!");
+
     }
 
 
@@ -176,23 +178,33 @@ public class CustomSliderView extends View {
                 }
 
                 if (slider.contains(x, y)) {
-                    for (Rect eventMarker : eventMarkers) {
-                        if (eventMarker.contains(x, y)) {
+                    for (EventMarker eventMarker : eventMarkers) {
+                        if (eventMarker.getRect().contains(x, y)) {
                             draggedMarker = eventMarker;
                         }
                     }
 
                     if (draggedMarker == null && datesSet()) {
-                        eventMarkers.add(new Rect(slider.left, y - eventMarkerHeight / 2,
-                                slider.right, y + eventMarkerHeight / 2));
+                        int day = yToMarkerIndex(y);
+                        eventMarkers.add(
+                                new EventMarker(discreteMarkers[day],
+                                //new EventMarker(new Rect(slider.left, y - eventMarkerHeight / 2,
+                                //slider.right, y + eventMarkerHeight / 2),
+                                null));
                         draggedMarker = eventMarkers.get(eventMarkers.size() - 1);
+                        draggedMarker.setDay(day);
                     }
                 }
                 break;
             case MotionEvent.ACTION_UP:
                 if(draggedMarker != null){
                     //todo: if draggedMarker does not lie on discrete marker, one has to drag it to the nearest discrete marker.
-                    openDialog();
+                    if (draggedMarker.getLearningStep() == null) {
+                        openDialog(draggedMarker);
+                    } else {
+                        draggedMarker.getLearningStep().setDate(dayToDate(draggedMarker.getDay()));
+                        addProject.upDateLearningSteps(learningStepList);
+                    }
                 }
                 draggedMarker = null;
 
@@ -200,13 +212,16 @@ public class CustomSliderView extends View {
 
             case MotionEvent.ACTION_MOVE:
                 if (draggedMarker != null && discreteMarkers != null) {
-                    for(int i = 0; i < discreteMarkers.length; i++){
-                        if(discreteMarkers[i] != null && discreteMarkers[i].contains(x,y) ){
-                            draggedMarker.top = discreteMarkers[i].top;
-                            draggedMarker.bottom= discreteMarkers[i].bottom;
-                            day = i;
-                        }
-                    }
+//                    for(int i = 0; i < discreteMarkers.length; i++){
+//                        if(discreteMarkers[i] != null && discreteMarkers[i].contains(x,y) ){
+//                            draggedMarker.getRect().top = discreteMarkers[i].top;
+//                            draggedMarker.getRect().bottom = discreteMarkers[i].bottom;
+//                            draggedMarker.setDay(i);
+//                        }
+//                    }
+                    int day = yToMarkerIndex(y);
+                    draggedMarker.setRect(discreteMarkers[day]);
+                    draggedMarker.setDay(day);
                 }
                 break;
         }
@@ -218,21 +233,24 @@ public class CustomSliderView extends View {
         return true;
     }
 
+    private int yToMarkerIndex(int y) {
+        int sliderHeight = slider.bottom - slider.top;
+        double fraction = 1 - 1.0*(y - slider.top) / sliderHeight;
+        return (int) Math.max(0, Math.min(Math.floor(fraction * discreteMarkers.length),
+                discreteMarkers.length-1));
+    }
+
     private boolean datesSet() {
         return startDateInMillis != null && endDateInMillis != null;
     }
 
-    private void openDialog() {
+    private void openDialog(final EventMarker eventMarker) {
 
         final Dialog dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.set_learning_steps_dialog);
         dialog.setTitle("Set Learning Steps");
 
-        final Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(startDateInMillis);
-        cal.add(Calendar.DATE, day);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        final String date = sdf.format(cal.getTime());
+        final String date = dayToDate(eventMarker.getDay());
 
         TextView text = (TextView)dialog.findViewById(R.id.set_learning_step_text);
         text.setText("Do you want to set learning step on " + date +" ?");
@@ -254,10 +272,11 @@ public class CustomSliderView extends View {
                 Collections.sort(learningStepList, new Comparator<LearningStep>() {
                     @Override
                     public int compare(LearningStep l1, LearningStep l2) {
-                        return l1.getDate().compareToIgnoreCase(l2.getDate());
+                        return l2.getDate().compareToIgnoreCase(l1.getDate());
                     }
                 });
                 addProject.upDateLearningSteps(learningStepList);
+                eventMarker.setLearningStep(learningStep);
                 dialog.dismiss();
             }
         });
@@ -265,15 +284,23 @@ public class CustomSliderView extends View {
         cancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                //todo: get rid of the chosen step, eventmarker should disappear.
-                //dismissEventMarker(day);
+                if (eventMarker.getLearningStep() == null) {
+                    eventMarkers.remove(eventMarker);
+                }
+                invalidate();
                 dialog.dismiss();
             }
         });
         dialog.show();
     }
 
-
+    private String dayToDate(int day) {
+        final Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(startDateInMillis);
+        cal.add(Calendar.DATE, day);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(cal.getTime());
+    }
 
 
     private void showDatePicker() {
@@ -313,7 +340,9 @@ public class CustomSliderView extends View {
 
 
         } else {
-            datePickerDialog.getDatePicker().setMinDate(startDateInMillis);
+            if(addProject.isStartDateSet()){
+                datePickerDialog.getDatePicker().setMinDate(startDateInMillis);
+            }
         }
 
         datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE,
@@ -368,16 +397,25 @@ public class CustomSliderView extends View {
     }
 
     private void discreteSlider() {
-        dayCount = (endDateInMillis - startDateInMillis)/(1000 * 60 * 60 * 24);
-        int days = (int)dayCount + 1;
+        //double dayCount = (endDateInMillis - startDateInMillis)/(1000 * 60 * 60 * 24);
 
-        discreteMarkers = new Rect[days];
+        int nDays = Math.round((endDateInMillis - startDateInMillis)/(1000 * 60 * 60 * 24));
+        int nMarkers = nDays + 1;
 
-        float diff = (slider.bottom - slider.top)/ (days + 1);
-        for(int i = 0 ; i < discreteMarkers.length; i++){
-            discreteMarkers[i] = new Rect(slider.left, (int)(slider.bottom - diff * (i + 1)  - 10 ), slider.right, (int)(slider.bottom - diff * (i + 1) + 10));
+        discreteMarkersRef = new Rect[nMarkers];
+
+        double diff = (sliderRef.bottom - sliderRef.top)/ nMarkers;
+        for(int i = 0 ; i < discreteMarkersRef.length; i++){
+            double centerY = sliderRef.bottom - (i + 0.5)*diff;
+            discreteMarkersRef[i] = new Rect(
+                    sliderRef.left,
+                    (int)(centerY - diff*eventMarkerRelativeHeight/2),
+                    sliderRef.right,
+                    (int)(centerY + diff*eventMarkerRelativeHeight/2));
         }
         slideDiscreteable = true;
+
+        updateRectSizes();
     }
 
 
@@ -394,15 +432,36 @@ public class CustomSliderView extends View {
         Log.d("size changed: ", "w: " + w + ", h: " + h );
         currentWidth = w;
         currentHeight = h;
+
+        updateRectSizes();
+
         super.onSizeChanged(w, h, oldw, oldh);
+    }
+
+    private void updateRectSizes() {
+        double factorX = currentWidth / referenceWidth;
+        double factorY = currentHeight / referenceHeight;
+
+        slider = scaleRect(sliderRef, factorX, factorY);
+        startDateRegion = scaleRect(startDateRegionRef, factorX, factorY);
+        endDateRegion = scaleRect(endDateRegionRef, factorX, factorY);
+
+        Log.d("discreteMarkersRef", "" + discreteMarkersRef);
+
+        if (discreteMarkersRef != null) {
+            discreteMarkers = new Rect[discreteMarkersRef.length];
+            for (int i = 0; i < discreteMarkersRef.length; i++) {
+                discreteMarkers[i] = scaleRect(discreteMarkersRef[i], factorX, factorY);
+            }
+
+        }
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        double factorX = currentWidth / referenceWidth;
-        double factorY = currentHeight / referenceHeight;
 
-        canvas.drawRect(scaleRect(slider, factorX, factorY), sliderPaint);
+
+        canvas.drawRect(slider, sliderPaint);
 
         if(slideDiscreteable) {
             for (Rect discreteMarker : discreteMarkers) {
@@ -410,12 +469,12 @@ public class CustomSliderView extends View {
             }
         }
 
-        for (Rect eventMarker : eventMarkers) {
-            canvas.drawRect(eventMarker, eventPaint);
+        for (EventMarker eventMarker : eventMarkers) {
+            canvas.drawRect(eventMarker.getRect(), eventPaint);
         }
 
-        canvas.drawRect(scaleRect(startDateRegion, factorX, factorY), dateRegionPaint);
-        canvas.drawRect(scaleRect(endDateRegion, factorX, factorY), dateRegionPaint);
+        canvas.drawRect(startDateRegion, dateRegionPaint);
+        canvas.drawRect(endDateRegion, dateRegionPaint);
     }
 
     private Rect scaleRect(Rect original, double factorX, double factorY) {

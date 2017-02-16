@@ -1,6 +1,7 @@
 package com.linxu.mounteverest;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -42,6 +43,8 @@ public class AddProject extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_project);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         customSliderView = (CustomSliderView)findViewById(R.id.slider);
         startTextView = (TextView)findViewById(R.id.startDate);

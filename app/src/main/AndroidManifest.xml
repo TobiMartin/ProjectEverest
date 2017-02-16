@@ -24,6 +24,7 @@
         <activity android:name=".Search"></activity>
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".ViewProfiles"></activity>
+        <activity android:name=".EditProject"></activity>
     </application>
 
 </manifest>
